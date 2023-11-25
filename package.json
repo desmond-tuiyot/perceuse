@@ -5,12 +5,12 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma:generate": "npx prisma generate",
     "prisma:diff": "npx prisma migrate diff",
-    "dev": "nodemon",
+    "dev": "npm run prisma:generate && nodemon",
     "compile": "tsc",
     "start": "npm run compile && node ./dist/index.js",
-    "lint": "ts-standard 2> /dev/null",
-    "prisma:generate": "npx prisma generate"
+    "lint": "ts-standard 2> /dev/null"
   },
   "keywords": [],
   "author": "",
