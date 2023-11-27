@@ -2,16 +2,16 @@ import "reflect-metadata"
 import express from 'express'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import { expressMiddleware } from '@apollo/server/express4';
+import { expressMiddleware } from '@apollo/server/express4'
 import http from 'http'
 import { buildSchema } from 'type-graphql'
 import { resolvers } from '@generated/type-graphql'
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"
 
 import { SERVER_PORT, SERVER_GQL_PATH } from './constants'
 
 const init = async () => {
-  const PORT = process.env.PORT || SERVER_PORT
+  const PORT = process.env.SERVER_PORT || SERVER_PORT
   const app = express()
   const prisma = new PrismaClient()
 
