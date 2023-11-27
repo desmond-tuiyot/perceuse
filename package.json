@@ -15,6 +15,7 @@
     "dev": "npm run prisma:generate && nodemon",
     "compile": "tsc",
     "start": " npm run compile && node ./dist/index.js",
+    "build": "npm run prisma:generate",
     "lint": "ts-standard 2> /dev/null"
   },
   "keywords": [],
@@ -33,7 +34,7 @@
     "@apollo/server": "^4.9.5",
     "@prisma/client": "^5.6.0",
     "express": "^4.18.2",
-    "graphql": "16.8.0",
+    "graphql": "^16.8.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.22.4",
     "graphql-type-json": "^0.3.2",
