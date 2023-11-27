@@ -5,7 +5,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { expressMiddleware } from '@apollo/server/express4'
 import http from 'http'
 import { buildSchema } from 'type-graphql'
-import { resolvers } from '@generated/type-graphql'
+import { resolvers } from './generated/type-graphql'
 import { PrismaClient } from "@prisma/client"
 
 import { SERVER_PORT, SERVER_GQL_PATH } from './constants'
