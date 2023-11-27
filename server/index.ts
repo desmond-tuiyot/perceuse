@@ -1,12 +1,13 @@
 import "reflect-metadata"
+import http from 'http'
+import cors from 'cors'
 import express from 'express'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
-import http from 'http'
 import { buildSchema } from 'type-graphql'
 import { resolvers } from './generated/type-graphql'
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from '@prisma/client'
 
 import { SERVER_PORT, SERVER_GQL_PATH } from './constants'
 
@@ -16,7 +17,12 @@ const init = async () => {
   const prisma = new PrismaClient()
 
   // TODO: define cors when we have a frontend - https://www.apollographql.com/docs/apollo-server/security/cors/#specifying-origins
+  app.use(cors())
+
   // TODO: define cookie parser when we have a frontend
+
+  // TODO: log incoming requests and responses
+
   
   app.use(express.json())
 
