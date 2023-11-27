@@ -1,0 +1,42 @@
+
+  
+name: Deploy to Elastic Beanstalk
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  deploy:  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - check out the repo source code in order to run commands against it
+        id: checkout-repo
+        uses: actions/checkout@v3
+        continue-on-error: true
+
+      - name: Step 2 - generate deployment package
+        id: generate-deployment-package
+        run: zip -r deploy-perceuse-dev-api.zip * -x "**.git**"
+
+      - name: Step 3 - deploy to Elastic Beanstalk
+        id: deploy-to-elastic-beanstalk
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: 'perceuse-api-dev'
+          environment_name: 'perceuse-api-env'
+          version_label: ${{ github.sha }}
+          region: 'us-east-2'
+          deployment_package: 'deploy-perceuse-dev-api.zip'
+          deployment_package_prefix: 'deploy-perceuse-dev-api'
+      
+      - name: Step 6 - Deployed!
+        if: ${{ steps.deploy-to-elastic-beanstalk.outputs.status == 'success' }}
+        run: echo "Deployed!"
+      
+      - name: Step 7 - Failed!
+        if: ${{ steps.deploy-to-elastic-beanstalk.outputs.status == 'failure' }}
+        run: echo "Failed!"
