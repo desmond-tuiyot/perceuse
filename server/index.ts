@@ -8,6 +8,7 @@ import { expressMiddleware } from '@apollo/server/express4'
 import { buildSchema } from 'type-graphql'
 import { resolvers } from './generated/type-graphql'
 import { PrismaClient } from '@prisma/client'
+import morgan from 'morgan'
 
 import { SERVER_PORT, SERVER_GQL_PATH } from './constants'
 
@@ -22,7 +23,7 @@ const init = async () => {
   // TODO: define cookie parser when we have a frontend
 
   // TODO: log incoming requests and responses
-
+  app.use(morgan('combined'))
   
   app.use(express.json())
 
