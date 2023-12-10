@@ -47,6 +47,22 @@ type AggregateNote {
   _sum: NoteSumAggregate
 }
 
+type AggregateTransition {
+  _avg: TransitionAvgAggregate
+  _count: TransitionCountAggregate
+  _max: TransitionMaxAggregate
+  _min: TransitionMinAggregate
+  _sum: TransitionSumAggregate
+}
+
+type AggregateTransitionsAndMoves {
+  _avg: TransitionsAndMovesAvgAggregate
+  _count: TransitionsAndMovesCountAggregate
+  _max: TransitionsAndMovesMaxAggregate
+  _min: TransitionsAndMovesMinAggregate
+  _sum: TransitionsAndMovesSumAggregate
+}
+
 type Creator {
   _count: CreatorCount
   createdAt: DateTimeISO!
@@ -339,6 +355,7 @@ type DanceMove {
   notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
   officialSong: String
   origin: String
+  transitions(cursor: TransitionsAndMovesWhereUniqueInput, distinct: [TransitionsAndMovesScalarFieldEnum!], orderBy: [TransitionsAndMovesOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): [TransitionsAndMoves!]!
   tutorials: [String!]!
   updatedAt: DateTimeISO!
 }
@@ -358,6 +375,7 @@ input DanceMoveAvgOrderByAggregateInput {
 type DanceMoveCount {
   difficultyHistory(where: DifficultyWhereInput): Int!
   notes(where: NoteWhereInput): Int!
+  transitions(where: TransitionsAndMovesWhereInput): Int!
 }
 
 type DanceMoveCountAggregate {
@@ -409,6 +427,7 @@ input DanceMoveCreateInput {
   notes: NoteCreateNestedManyWithoutDanceMoveInput
   officialSong: String
   origin: String
+  transitions: TransitionsAndMovesCreateNestedManyWithoutDanceMoveInput
   tutorials: DanceMoveCreatetutorialsInput
   updatedAt: DateTimeISO
 }
@@ -498,6 +517,12 @@ input DanceMoveCreateNestedOneWithoutNotesInput {
   create: DanceMoveCreateWithoutNotesInput
 }
 
+input DanceMoveCreateNestedOneWithoutTransitionsInput {
+  connect: DanceMoveWhereUniqueInput
+  connectOrCreate: DanceMoveCreateOrConnectWithoutTransitionsInput
+  create: DanceMoveCreateWithoutTransitionsInput
+}
+
 input DanceMoveCreateOrConnectWithoutCreatorInput {
   create: DanceMoveCreateWithoutCreatorInput!
   where: DanceMoveWhereUniqueInput!
@@ -518,6 +543,11 @@ input DanceMoveCreateOrConnectWithoutNotesInput {
   where: DanceMoveWhereUniqueInput!
 }
 
+input DanceMoveCreateOrConnectWithoutTransitionsInput {
+  create: DanceMoveCreateWithoutTransitionsInput!
+  where: DanceMoveWhereUniqueInput!
+}
+
 input DanceMoveCreateWithoutCreatorInput {
   aliases: DanceMoveCreatealiasesInput
   createdAt: DateTimeISO
@@ -531,6 +561,7 @@ input DanceMoveCreateWithoutCreatorInput {
   notes: NoteCreateNestedManyWithoutDanceMoveInput
   officialSong: String
   origin: String
+  transitions: TransitionsAndMovesCreateNestedManyWithoutDanceMoveInput
   tutorials: DanceMoveCreatetutorialsInput
   updatedAt: DateTimeISO
 }
@@ -548,6 +579,7 @@ input DanceMoveCreateWithoutDanceStyleInput {
   notes: NoteCreateNestedManyWithoutDanceMoveInput
   officialSong: String
   origin: String
+  transitions: TransitionsAndMovesCreateNestedManyWithoutDanceMoveInput
   tutorials: DanceMoveCreatetutorialsInput
   updatedAt: DateTimeISO
 }
@@ -565,6 +597,7 @@ input DanceMoveCreateWithoutDifficultyHistoryInput {
   notes: NoteCreateNestedManyWithoutDanceMoveInput
   officialSong: String
   origin: String
+  transitions: TransitionsAndMovesCreateNestedManyWithoutDanceMoveInput
   tutorials: DanceMoveCreatetutorialsInput
   updatedAt: DateTimeISO
 }
@@ -580,6 +613,25 @@ input DanceMoveCreateWithoutNotesInput {
   difficultyHistory: DifficultyCreateNestedManyWithoutDanceMoveInput
   era: Era
   name: String!
+  officialSong: String
+  origin: String
+  transitions: TransitionsAndMovesCreateNestedManyWithoutDanceMoveInput
+  tutorials: DanceMoveCreatetutorialsInput
+  updatedAt: DateTimeISO
+}
+
+input DanceMoveCreateWithoutTransitionsInput {
+  aliases: DanceMoveCreatealiasesInput
+  createdAt: DateTimeISO
+  creator: CreatorCreateNestedOneWithoutDanceMovesInput
+  danceStyle: DanceStyleCreateNestedOneWithoutDanceMovesInput
+  dateCreated: DateTimeISO
+  dateLearned: DateTimeISO
+  datesReviewed: DanceMoveCreatedatesReviewedInput
+  difficultyHistory: DifficultyCreateNestedManyWithoutDanceMoveInput
+  era: Era
+  name: String!
+  notes: NoteCreateNestedManyWithoutDanceMoveInput
   officialSong: String
   origin: String
   tutorials: DanceMoveCreatetutorialsInput
@@ -730,6 +782,7 @@ input DanceMoveOrderByWithRelationInput {
   notes: NoteOrderByRelationAggregateInput
   officialSong: SortOrderInput
   origin: SortOrderInput
+  transitions: TransitionsAndMovesOrderByRelationAggregateInput
   tutorials: SortOrder
   updatedAt: SortOrder
 }
@@ -822,6 +875,7 @@ input DanceMoveUpdateInput {
   notes: NoteUpdateManyWithoutDanceMoveNestedInput
   officialSong: NullableStringFieldUpdateOperationsInput
   origin: NullableStringFieldUpdateOperationsInput
+  transitions: TransitionsAndMovesUpdateManyWithoutDanceMoveNestedInput
   tutorials: DanceMoveUpdatetutorialsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -886,6 +940,14 @@ input DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput {
   upsert: DanceMoveUpsertWithoutDifficultyHistoryInput
 }
 
+input DanceMoveUpdateOneRequiredWithoutTransitionsNestedInput {
+  connect: DanceMoveWhereUniqueInput
+  connectOrCreate: DanceMoveCreateOrConnectWithoutTransitionsInput
+  create: DanceMoveCreateWithoutTransitionsInput
+  update: DanceMoveUpdateToOneWithWhereWithoutTransitionsInput
+  upsert: DanceMoveUpsertWithoutTransitionsInput
+}
+
 input DanceMoveUpdateOneWithoutNotesNestedInput {
   connect: DanceMoveWhereUniqueInput
   connectOrCreate: DanceMoveCreateOrConnectWithoutNotesInput
@@ -903,6 +965,11 @@ input DanceMoveUpdateToOneWithWhereWithoutDifficultyHistoryInput {
 
 input DanceMoveUpdateToOneWithWhereWithoutNotesInput {
   data: DanceMoveUpdateWithoutNotesInput!
+  where: DanceMoveWhereInput
+}
+
+input DanceMoveUpdateToOneWithWhereWithoutTransitionsInput {
+  data: DanceMoveUpdateWithoutTransitionsInput!
   where: DanceMoveWhereInput
 }
 
@@ -929,6 +996,7 @@ input DanceMoveUpdateWithoutCreatorInput {
   notes: NoteUpdateManyWithoutDanceMoveNestedInput
   officialSong: NullableStringFieldUpdateOperationsInput
   origin: NullableStringFieldUpdateOperationsInput
+  transitions: TransitionsAndMovesUpdateManyWithoutDanceMoveNestedInput
   tutorials: DanceMoveUpdatetutorialsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -946,6 +1014,7 @@ input DanceMoveUpdateWithoutDanceStyleInput {
   notes: NoteUpdateManyWithoutDanceMoveNestedInput
   officialSong: NullableStringFieldUpdateOperationsInput
   origin: NullableStringFieldUpdateOperationsInput
+  transitions: TransitionsAndMovesUpdateManyWithoutDanceMoveNestedInput
   tutorials: DanceMoveUpdatetutorialsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -963,6 +1032,7 @@ input DanceMoveUpdateWithoutDifficultyHistoryInput {
   notes: NoteUpdateManyWithoutDanceMoveNestedInput
   officialSong: NullableStringFieldUpdateOperationsInput
   origin: NullableStringFieldUpdateOperationsInput
+  transitions: TransitionsAndMovesUpdateManyWithoutDanceMoveNestedInput
   tutorials: DanceMoveUpdatetutorialsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -978,6 +1048,25 @@ input DanceMoveUpdateWithoutNotesInput {
   difficultyHistory: DifficultyUpdateManyWithoutDanceMoveNestedInput
   era: NullableEnumEraFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  officialSong: NullableStringFieldUpdateOperationsInput
+  origin: NullableStringFieldUpdateOperationsInput
+  transitions: TransitionsAndMovesUpdateManyWithoutDanceMoveNestedInput
+  tutorials: DanceMoveUpdatetutorialsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DanceMoveUpdateWithoutTransitionsInput {
+  aliases: DanceMoveUpdatealiasesInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  creator: CreatorUpdateOneWithoutDanceMovesNestedInput
+  danceStyle: DanceStyleUpdateOneWithoutDanceMovesNestedInput
+  dateCreated: NullableDateTimeFieldUpdateOperationsInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: DanceMoveUpdatedatesReviewedInput
+  difficultyHistory: DifficultyUpdateManyWithoutDanceMoveNestedInput
+  era: NullableEnumEraFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutDanceMoveNestedInput
   officialSong: NullableStringFieldUpdateOperationsInput
   origin: NullableStringFieldUpdateOperationsInput
   tutorials: DanceMoveUpdatetutorialsInput
@@ -1023,6 +1112,12 @@ input DanceMoveUpsertWithoutNotesInput {
   where: DanceMoveWhereInput
 }
 
+input DanceMoveUpsertWithoutTransitionsInput {
+  create: DanceMoveCreateWithoutTransitionsInput!
+  update: DanceMoveUpdateWithoutTransitionsInput!
+  where: DanceMoveWhereInput
+}
+
 input DanceMoveWhereInput {
   AND: [DanceMoveWhereInput!]
   NOT: [DanceMoveWhereInput!]
@@ -1043,6 +1138,7 @@ input DanceMoveWhereInput {
   notes: NoteListRelationFilter
   officialSong: StringNullableFilter
   origin: StringNullableFilter
+  transitions: TransitionsAndMovesListRelationFilter
   tutorials: StringNullableListFilter
   updatedAt: DateTimeFilter
 }
@@ -1067,6 +1163,7 @@ input DanceMoveWhereUniqueInput {
   notes: NoteListRelationFilter
   officialSong: StringNullableFilter
   origin: StringNullableFilter
+  transitions: TransitionsAndMovesListRelationFilter
   tutorials: StringNullableListFilter
   updatedAt: DateTimeFilter
 }
@@ -1650,6 +1747,8 @@ type Difficulty {
   id: Int!
   notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
   rating: Int!
+  transition(where: TransitionWhereInput): Transition
+  transitionId: Int
   updatedAt: DateTimeISO!
 }
 
@@ -1657,12 +1756,14 @@ type DifficultyAvgAggregate {
   danceMoveId: Float
   id: Float
   rating: Float
+  transitionId: Float
 }
 
 input DifficultyAvgOrderByAggregateInput {
   danceMoveId: SortOrder
   id: SortOrder
   rating: SortOrder
+  transitionId: SortOrder
 }
 
 type DifficultyCount {
@@ -1676,6 +1777,7 @@ type DifficultyCountAggregate {
   date: Int!
   id: Int!
   rating: Int!
+  transitionId: Int!
   updatedAt: Int!
 }
 
@@ -1685,6 +1787,7 @@ input DifficultyCountOrderByAggregateInput {
   date: SortOrder
   id: SortOrder
   rating: SortOrder
+  transitionId: SortOrder
   updatedAt: SortOrder
 }
 
@@ -1694,6 +1797,7 @@ input DifficultyCreateInput {
   date: DateTimeISO!
   notes: NoteCreateNestedManyWithoutDifficultyInput
   rating: Int!
+  transition: TransitionCreateNestedOneWithoutDifficultyHistoryInput
   updatedAt: DateTimeISO
 }
 
@@ -1702,6 +1806,7 @@ input DifficultyCreateManyDanceMoveInput {
   date: DateTimeISO!
   id: Int
   rating: Int!
+  transitionId: Int
   updatedAt: DateTimeISO
 }
 
@@ -1716,7 +1821,22 @@ input DifficultyCreateManyInput {
   date: DateTimeISO!
   id: Int
   rating: Int!
+  transitionId: Int
   updatedAt: DateTimeISO
+}
+
+input DifficultyCreateManyTransitionInput {
+  createdAt: DateTimeISO
+  danceMoveId: Int!
+  date: DateTimeISO!
+  id: Int
+  rating: Int!
+  updatedAt: DateTimeISO
+}
+
+input DifficultyCreateManyTransitionInputEnvelope {
+  data: [DifficultyCreateManyTransitionInput!]!
+  skipDuplicates: Boolean
 }
 
 input DifficultyCreateNestedManyWithoutDanceMoveInput {
@@ -1724,6 +1844,13 @@ input DifficultyCreateNestedManyWithoutDanceMoveInput {
   connectOrCreate: [DifficultyCreateOrConnectWithoutDanceMoveInput!]
   create: [DifficultyCreateWithoutDanceMoveInput!]
   createMany: DifficultyCreateManyDanceMoveInputEnvelope
+}
+
+input DifficultyCreateNestedManyWithoutTransitionInput {
+  connect: [DifficultyWhereUniqueInput!]
+  connectOrCreate: [DifficultyCreateOrConnectWithoutTransitionInput!]
+  create: [DifficultyCreateWithoutTransitionInput!]
+  createMany: DifficultyCreateManyTransitionInputEnvelope
 }
 
 input DifficultyCreateNestedOneWithoutNotesInput {
@@ -1742,11 +1869,17 @@ input DifficultyCreateOrConnectWithoutNotesInput {
   where: DifficultyWhereUniqueInput!
 }
 
+input DifficultyCreateOrConnectWithoutTransitionInput {
+  create: DifficultyCreateWithoutTransitionInput!
+  where: DifficultyWhereUniqueInput!
+}
+
 input DifficultyCreateWithoutDanceMoveInput {
   createdAt: DateTimeISO
   date: DateTimeISO!
   notes: NoteCreateNestedManyWithoutDifficultyInput
   rating: Int!
+  transition: TransitionCreateNestedOneWithoutDifficultyHistoryInput
   updatedAt: DateTimeISO
 }
 
@@ -1754,6 +1887,16 @@ input DifficultyCreateWithoutNotesInput {
   createdAt: DateTimeISO
   danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput!
   date: DateTimeISO!
+  rating: Int!
+  transition: TransitionCreateNestedOneWithoutDifficultyHistoryInput
+  updatedAt: DateTimeISO
+}
+
+input DifficultyCreateWithoutTransitionInput {
+  createdAt: DateTimeISO
+  danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput!
+  date: DateTimeISO!
+  notes: NoteCreateNestedManyWithoutDifficultyInput
   rating: Int!
   updatedAt: DateTimeISO
 }
@@ -1769,6 +1912,7 @@ type DifficultyGroupBy {
   date: DateTimeISO!
   id: Int!
   rating: Int!
+  transitionId: Int
   updatedAt: DateTimeISO!
 }
 
@@ -1784,6 +1928,7 @@ type DifficultyMaxAggregate {
   date: DateTimeISO
   id: Int
   rating: Int
+  transitionId: Int
   updatedAt: DateTimeISO
 }
 
@@ -1793,6 +1938,7 @@ input DifficultyMaxOrderByAggregateInput {
   date: SortOrder
   id: SortOrder
   rating: SortOrder
+  transitionId: SortOrder
   updatedAt: SortOrder
 }
 
@@ -1802,6 +1948,7 @@ type DifficultyMinAggregate {
   date: DateTimeISO
   id: Int
   rating: Int
+  transitionId: Int
   updatedAt: DateTimeISO
 }
 
@@ -1811,6 +1958,7 @@ input DifficultyMinOrderByAggregateInput {
   date: SortOrder
   id: SortOrder
   rating: SortOrder
+  transitionId: SortOrder
   updatedAt: SortOrder
 }
 
@@ -1834,6 +1982,7 @@ input DifficultyOrderByWithAggregationInput {
   date: SortOrder
   id: SortOrder
   rating: SortOrder
+  transitionId: SortOrderInput
   updatedAt: SortOrder
 }
 
@@ -1845,6 +1994,8 @@ input DifficultyOrderByWithRelationInput {
   id: SortOrder
   notes: NoteOrderByRelationAggregateInput
   rating: SortOrder
+  transition: TransitionOrderByWithRelationInput
+  transitionId: SortOrderInput
   updatedAt: SortOrder
 }
 
@@ -1854,6 +2005,7 @@ enum DifficultyScalarFieldEnum {
   date
   id
   rating
+  transitionId
   updatedAt
 }
 
@@ -1866,6 +2018,7 @@ input DifficultyScalarWhereInput {
   date: DateTimeFilter
   id: IntFilter
   rating: IntFilter
+  transitionId: IntNullableFilter
   updatedAt: DateTimeFilter
 }
 
@@ -1878,6 +2031,7 @@ input DifficultyScalarWhereWithAggregatesInput {
   date: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   rating: IntWithAggregatesFilter
+  transitionId: IntNullableWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
 }
 
@@ -1885,12 +2039,14 @@ type DifficultySumAggregate {
   danceMoveId: Int
   id: Int
   rating: Int
+  transitionId: Int
 }
 
 input DifficultySumOrderByAggregateInput {
   danceMoveId: SortOrder
   id: SortOrder
   rating: SortOrder
+  transitionId: SortOrder
 }
 
 input DifficultyUpdateInput {
@@ -1899,6 +2055,7 @@ input DifficultyUpdateInput {
   date: DateTimeFieldUpdateOperationsInput
   notes: NoteUpdateManyWithoutDifficultyNestedInput
   rating: IntFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutDifficultyHistoryNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1910,6 +2067,11 @@ input DifficultyUpdateManyMutationInput {
 }
 
 input DifficultyUpdateManyWithWhereWithoutDanceMoveInput {
+  data: DifficultyUpdateManyMutationInput!
+  where: DifficultyScalarWhereInput!
+}
+
+input DifficultyUpdateManyWithWhereWithoutTransitionInput {
   data: DifficultyUpdateManyMutationInput!
   where: DifficultyScalarWhereInput!
 }
@@ -1926,6 +2088,20 @@ input DifficultyUpdateManyWithoutDanceMoveNestedInput {
   update: [DifficultyUpdateWithWhereUniqueWithoutDanceMoveInput!]
   updateMany: [DifficultyUpdateManyWithWhereWithoutDanceMoveInput!]
   upsert: [DifficultyUpsertWithWhereUniqueWithoutDanceMoveInput!]
+}
+
+input DifficultyUpdateManyWithoutTransitionNestedInput {
+  connect: [DifficultyWhereUniqueInput!]
+  connectOrCreate: [DifficultyCreateOrConnectWithoutTransitionInput!]
+  create: [DifficultyCreateWithoutTransitionInput!]
+  createMany: DifficultyCreateManyTransitionInputEnvelope
+  delete: [DifficultyWhereUniqueInput!]
+  deleteMany: [DifficultyScalarWhereInput!]
+  disconnect: [DifficultyWhereUniqueInput!]
+  set: [DifficultyWhereUniqueInput!]
+  update: [DifficultyUpdateWithWhereUniqueWithoutTransitionInput!]
+  updateMany: [DifficultyUpdateManyWithWhereWithoutTransitionInput!]
+  upsert: [DifficultyUpsertWithWhereUniqueWithoutTransitionInput!]
 }
 
 input DifficultyUpdateOneWithoutNotesNestedInput {
@@ -1948,11 +2124,17 @@ input DifficultyUpdateWithWhereUniqueWithoutDanceMoveInput {
   where: DifficultyWhereUniqueInput!
 }
 
+input DifficultyUpdateWithWhereUniqueWithoutTransitionInput {
+  data: DifficultyUpdateWithoutTransitionInput!
+  where: DifficultyWhereUniqueInput!
+}
+
 input DifficultyUpdateWithoutDanceMoveInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
   notes: NoteUpdateManyWithoutDifficultyNestedInput
   rating: IntFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutDifficultyHistoryNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1961,12 +2143,28 @@ input DifficultyUpdateWithoutNotesInput {
   danceMove: DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput
   date: DateTimeFieldUpdateOperationsInput
   rating: IntFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutDifficultyHistoryNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DifficultyUpdateWithoutTransitionInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMove: DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput
+  date: DateTimeFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutDifficultyNestedInput
+  rating: IntFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input DifficultyUpsertWithWhereUniqueWithoutDanceMoveInput {
   create: DifficultyCreateWithoutDanceMoveInput!
   update: DifficultyUpdateWithoutDanceMoveInput!
+  where: DifficultyWhereUniqueInput!
+}
+
+input DifficultyUpsertWithWhereUniqueWithoutTransitionInput {
+  create: DifficultyCreateWithoutTransitionInput!
+  update: DifficultyUpdateWithoutTransitionInput!
   where: DifficultyWhereUniqueInput!
 }
 
@@ -1987,6 +2185,8 @@ input DifficultyWhereInput {
   id: IntFilter
   notes: NoteListRelationFilter
   rating: IntFilter
+  transition: TransitionNullableRelationFilter
+  transitionId: IntNullableFilter
   updatedAt: DateTimeFilter
 }
 
@@ -2001,6 +2201,8 @@ input DifficultyWhereUniqueInput {
   id: Int
   notes: NoteListRelationFilter
   rating: IntFilter
+  transition: TransitionNullableRelationFilter
+  transitionId: IntNullableFilter
   updatedAt: DateTimeFilter
 }
 
@@ -2094,36 +2296,50 @@ type Mutation {
   createManyDanceStyle(data: [DanceStyleCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyDifficulty(data: [DifficultyCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyNote(data: [NoteCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyTransition(data: [TransitionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyTransitionsAndMoves(data: [TransitionsAndMovesCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createOneCreator(data: CreatorCreateInput!): Creator!
   createOneDanceMove(data: DanceMoveCreateInput!): DanceMove!
   createOneDanceStyle(data: DanceStyleCreateInput!): DanceStyle!
   createOneDifficulty(data: DifficultyCreateInput!): Difficulty!
   createOneNote(data: NoteCreateInput!): Note!
+  createOneTransition(data: TransitionCreateInput!): Transition!
+  createOneTransitionsAndMoves(data: TransitionsAndMovesCreateInput!): TransitionsAndMoves!
   deleteManyCreator(where: CreatorWhereInput): AffectedRowsOutput!
   deleteManyDanceMove(where: DanceMoveWhereInput): AffectedRowsOutput!
   deleteManyDanceStyle(where: DanceStyleWhereInput): AffectedRowsOutput!
   deleteManyDifficulty(where: DifficultyWhereInput): AffectedRowsOutput!
   deleteManyNote(where: NoteWhereInput): AffectedRowsOutput!
+  deleteManyTransition(where: TransitionWhereInput): AffectedRowsOutput!
+  deleteManyTransitionsAndMoves(where: TransitionsAndMovesWhereInput): AffectedRowsOutput!
   deleteOneCreator(where: CreatorWhereUniqueInput!): Creator
   deleteOneDanceMove(where: DanceMoveWhereUniqueInput!): DanceMove
   deleteOneDanceStyle(where: DanceStyleWhereUniqueInput!): DanceStyle
   deleteOneDifficulty(where: DifficultyWhereUniqueInput!): Difficulty
   deleteOneNote(where: NoteWhereUniqueInput!): Note
+  deleteOneTransition(where: TransitionWhereUniqueInput!): Transition
+  deleteOneTransitionsAndMoves(where: TransitionsAndMovesWhereUniqueInput!): TransitionsAndMoves
   updateManyCreator(data: CreatorUpdateManyMutationInput!, where: CreatorWhereInput): AffectedRowsOutput!
   updateManyDanceMove(data: DanceMoveUpdateManyMutationInput!, where: DanceMoveWhereInput): AffectedRowsOutput!
   updateManyDanceStyle(data: DanceStyleUpdateManyMutationInput!, where: DanceStyleWhereInput): AffectedRowsOutput!
   updateManyDifficulty(data: DifficultyUpdateManyMutationInput!, where: DifficultyWhereInput): AffectedRowsOutput!
   updateManyNote(data: NoteUpdateManyMutationInput!, where: NoteWhereInput): AffectedRowsOutput!
+  updateManyTransition(data: TransitionUpdateManyMutationInput!, where: TransitionWhereInput): AffectedRowsOutput!
+  updateManyTransitionsAndMoves(data: TransitionsAndMovesUpdateManyMutationInput!, where: TransitionsAndMovesWhereInput): AffectedRowsOutput!
   updateOneCreator(data: CreatorUpdateInput!, where: CreatorWhereUniqueInput!): Creator
   updateOneDanceMove(data: DanceMoveUpdateInput!, where: DanceMoveWhereUniqueInput!): DanceMove
   updateOneDanceStyle(data: DanceStyleUpdateInput!, where: DanceStyleWhereUniqueInput!): DanceStyle
   updateOneDifficulty(data: DifficultyUpdateInput!, where: DifficultyWhereUniqueInput!): Difficulty
   updateOneNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note
+  updateOneTransition(data: TransitionUpdateInput!, where: TransitionWhereUniqueInput!): Transition
+  updateOneTransitionsAndMoves(data: TransitionsAndMovesUpdateInput!, where: TransitionsAndMovesWhereUniqueInput!): TransitionsAndMoves
   upsertOneCreator(create: CreatorCreateInput!, update: CreatorUpdateInput!, where: CreatorWhereUniqueInput!): Creator!
   upsertOneDanceMove(create: DanceMoveCreateInput!, update: DanceMoveUpdateInput!, where: DanceMoveWhereUniqueInput!): DanceMove!
   upsertOneDanceStyle(create: DanceStyleCreateInput!, update: DanceStyleUpdateInput!, where: DanceStyleWhereUniqueInput!): DanceStyle!
   upsertOneDifficulty(create: DifficultyCreateInput!, update: DifficultyUpdateInput!, where: DifficultyWhereUniqueInput!): Difficulty!
   upsertOneNote(create: NoteCreateInput!, update: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note!
+  upsertOneTransition(create: TransitionCreateInput!, update: TransitionUpdateInput!, where: TransitionWhereUniqueInput!): Transition!
+  upsertOneTransitionsAndMoves(create: TransitionsAndMovesCreateInput!, update: TransitionsAndMovesUpdateInput!, where: TransitionsAndMovesWhereUniqueInput!): TransitionsAndMoves!
 }
 
 input NestedDateTimeFilter {
@@ -2341,6 +2557,8 @@ type Note {
   difficultyId: Int
   id: Int!
   text: String!
+  transition(where: TransitionWhereInput): Transition
+  transitionId: Int
   updatedAt: DateTimeISO!
 }
 
@@ -2349,6 +2567,7 @@ type NoteAvgAggregate {
   danceStyleId: Float
   difficultyId: Float
   id: Float
+  transitionId: Float
 }
 
 input NoteAvgOrderByAggregateInput {
@@ -2356,6 +2575,7 @@ input NoteAvgOrderByAggregateInput {
   danceStyleId: SortOrder
   difficultyId: SortOrder
   id: SortOrder
+  transitionId: SortOrder
 }
 
 type NoteCountAggregate {
@@ -2366,6 +2586,7 @@ type NoteCountAggregate {
   difficultyId: Int!
   id: Int!
   text: Int!
+  transitionId: Int!
   updatedAt: Int!
 }
 
@@ -2376,6 +2597,7 @@ input NoteCountOrderByAggregateInput {
   difficultyId: SortOrder
   id: SortOrder
   text: SortOrder
+  transitionId: SortOrder
   updatedAt: SortOrder
 }
 
@@ -2385,6 +2607,7 @@ input NoteCreateInput {
   danceStyle: DanceStyleCreateNestedOneWithoutNotesInput
   difficulty: DifficultyCreateNestedOneWithoutNotesInput
   text: String!
+  transition: TransitionCreateNestedOneWithoutNotesInput
   updatedAt: DateTimeISO
 }
 
@@ -2394,6 +2617,7 @@ input NoteCreateManyDanceMoveInput {
   difficultyId: Int
   id: Int
   text: String!
+  transitionId: Int
   updatedAt: DateTimeISO
 }
 
@@ -2408,6 +2632,7 @@ input NoteCreateManyDanceStyleInput {
   difficultyId: Int
   id: Int
   text: String!
+  transitionId: Int
   updatedAt: DateTimeISO
 }
 
@@ -2422,6 +2647,7 @@ input NoteCreateManyDifficultyInput {
   danceStyleId: Int
   id: Int
   text: String!
+  transitionId: Int
   updatedAt: DateTimeISO
 }
 
@@ -2437,7 +2663,23 @@ input NoteCreateManyInput {
   difficultyId: Int
   id: Int
   text: String!
+  transitionId: Int
   updatedAt: DateTimeISO
+}
+
+input NoteCreateManyTransitionInput {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  danceStyleId: Int
+  difficultyId: Int
+  id: Int
+  text: String!
+  updatedAt: DateTimeISO
+}
+
+input NoteCreateManyTransitionInputEnvelope {
+  data: [NoteCreateManyTransitionInput!]!
+  skipDuplicates: Boolean
 }
 
 input NoteCreateNestedManyWithoutDanceMoveInput {
@@ -2461,6 +2703,13 @@ input NoteCreateNestedManyWithoutDifficultyInput {
   createMany: NoteCreateManyDifficultyInputEnvelope
 }
 
+input NoteCreateNestedManyWithoutTransitionInput {
+  connect: [NoteWhereUniqueInput!]
+  connectOrCreate: [NoteCreateOrConnectWithoutTransitionInput!]
+  create: [NoteCreateWithoutTransitionInput!]
+  createMany: NoteCreateManyTransitionInputEnvelope
+}
+
 input NoteCreateOrConnectWithoutDanceMoveInput {
   create: NoteCreateWithoutDanceMoveInput!
   where: NoteWhereUniqueInput!
@@ -2476,11 +2725,17 @@ input NoteCreateOrConnectWithoutDifficultyInput {
   where: NoteWhereUniqueInput!
 }
 
+input NoteCreateOrConnectWithoutTransitionInput {
+  create: NoteCreateWithoutTransitionInput!
+  where: NoteWhereUniqueInput!
+}
+
 input NoteCreateWithoutDanceMoveInput {
   createdAt: DateTimeISO
   danceStyle: DanceStyleCreateNestedOneWithoutNotesInput
   difficulty: DifficultyCreateNestedOneWithoutNotesInput
   text: String!
+  transition: TransitionCreateNestedOneWithoutNotesInput
   updatedAt: DateTimeISO
 }
 
@@ -2489,6 +2744,7 @@ input NoteCreateWithoutDanceStyleInput {
   danceMove: DanceMoveCreateNestedOneWithoutNotesInput
   difficulty: DifficultyCreateNestedOneWithoutNotesInput
   text: String!
+  transition: TransitionCreateNestedOneWithoutNotesInput
   updatedAt: DateTimeISO
 }
 
@@ -2496,6 +2752,16 @@ input NoteCreateWithoutDifficultyInput {
   createdAt: DateTimeISO
   danceMove: DanceMoveCreateNestedOneWithoutNotesInput
   danceStyle: DanceStyleCreateNestedOneWithoutNotesInput
+  text: String!
+  transition: TransitionCreateNestedOneWithoutNotesInput
+  updatedAt: DateTimeISO
+}
+
+input NoteCreateWithoutTransitionInput {
+  createdAt: DateTimeISO
+  danceMove: DanceMoveCreateNestedOneWithoutNotesInput
+  danceStyle: DanceStyleCreateNestedOneWithoutNotesInput
+  difficulty: DifficultyCreateNestedOneWithoutNotesInput
   text: String!
   updatedAt: DateTimeISO
 }
@@ -2512,6 +2778,7 @@ type NoteGroupBy {
   difficultyId: Int
   id: Int!
   text: String!
+  transitionId: Int
   updatedAt: DateTimeISO!
 }
 
@@ -2528,6 +2795,7 @@ type NoteMaxAggregate {
   difficultyId: Int
   id: Int
   text: String
+  transitionId: Int
   updatedAt: DateTimeISO
 }
 
@@ -2538,6 +2806,7 @@ input NoteMaxOrderByAggregateInput {
   difficultyId: SortOrder
   id: SortOrder
   text: SortOrder
+  transitionId: SortOrder
   updatedAt: SortOrder
 }
 
@@ -2548,6 +2817,7 @@ type NoteMinAggregate {
   difficultyId: Int
   id: Int
   text: String
+  transitionId: Int
   updatedAt: DateTimeISO
 }
 
@@ -2558,6 +2828,7 @@ input NoteMinOrderByAggregateInput {
   difficultyId: SortOrder
   id: SortOrder
   text: SortOrder
+  transitionId: SortOrder
   updatedAt: SortOrder
 }
 
@@ -2577,6 +2848,7 @@ input NoteOrderByWithAggregationInput {
   difficultyId: SortOrderInput
   id: SortOrder
   text: SortOrder
+  transitionId: SortOrderInput
   updatedAt: SortOrder
 }
 
@@ -2590,6 +2862,8 @@ input NoteOrderByWithRelationInput {
   difficultyId: SortOrderInput
   id: SortOrder
   text: SortOrder
+  transition: TransitionOrderByWithRelationInput
+  transitionId: SortOrderInput
   updatedAt: SortOrder
 }
 
@@ -2600,6 +2874,7 @@ enum NoteScalarFieldEnum {
   difficultyId
   id
   text
+  transitionId
   updatedAt
 }
 
@@ -2613,6 +2888,7 @@ input NoteScalarWhereInput {
   difficultyId: IntNullableFilter
   id: IntFilter
   text: StringFilter
+  transitionId: IntNullableFilter
   updatedAt: DateTimeFilter
 }
 
@@ -2626,6 +2902,7 @@ input NoteScalarWhereWithAggregatesInput {
   difficultyId: IntNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   text: StringWithAggregatesFilter
+  transitionId: IntNullableWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
 }
 
@@ -2634,6 +2911,7 @@ type NoteSumAggregate {
   danceStyleId: Int
   difficultyId: Int
   id: Int
+  transitionId: Int
 }
 
 input NoteSumOrderByAggregateInput {
@@ -2641,6 +2919,7 @@ input NoteSumOrderByAggregateInput {
   danceStyleId: SortOrder
   difficultyId: SortOrder
   id: SortOrder
+  transitionId: SortOrder
 }
 
 input NoteUpdateInput {
@@ -2649,6 +2928,7 @@ input NoteUpdateInput {
   danceStyle: DanceStyleUpdateOneWithoutNotesNestedInput
   difficulty: DifficultyUpdateOneWithoutNotesNestedInput
   text: StringFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutNotesNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -2669,6 +2949,11 @@ input NoteUpdateManyWithWhereWithoutDanceStyleInput {
 }
 
 input NoteUpdateManyWithWhereWithoutDifficultyInput {
+  data: NoteUpdateManyMutationInput!
+  where: NoteScalarWhereInput!
+}
+
+input NoteUpdateManyWithWhereWithoutTransitionInput {
   data: NoteUpdateManyMutationInput!
   where: NoteScalarWhereInput!
 }
@@ -2715,6 +3000,20 @@ input NoteUpdateManyWithoutDifficultyNestedInput {
   upsert: [NoteUpsertWithWhereUniqueWithoutDifficultyInput!]
 }
 
+input NoteUpdateManyWithoutTransitionNestedInput {
+  connect: [NoteWhereUniqueInput!]
+  connectOrCreate: [NoteCreateOrConnectWithoutTransitionInput!]
+  create: [NoteCreateWithoutTransitionInput!]
+  createMany: NoteCreateManyTransitionInputEnvelope
+  delete: [NoteWhereUniqueInput!]
+  deleteMany: [NoteScalarWhereInput!]
+  disconnect: [NoteWhereUniqueInput!]
+  set: [NoteWhereUniqueInput!]
+  update: [NoteUpdateWithWhereUniqueWithoutTransitionInput!]
+  updateMany: [NoteUpdateManyWithWhereWithoutTransitionInput!]
+  upsert: [NoteUpsertWithWhereUniqueWithoutTransitionInput!]
+}
+
 input NoteUpdateWithWhereUniqueWithoutDanceMoveInput {
   data: NoteUpdateWithoutDanceMoveInput!
   where: NoteWhereUniqueInput!
@@ -2730,11 +3029,17 @@ input NoteUpdateWithWhereUniqueWithoutDifficultyInput {
   where: NoteWhereUniqueInput!
 }
 
+input NoteUpdateWithWhereUniqueWithoutTransitionInput {
+  data: NoteUpdateWithoutTransitionInput!
+  where: NoteWhereUniqueInput!
+}
+
 input NoteUpdateWithoutDanceMoveInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   danceStyle: DanceStyleUpdateOneWithoutNotesNestedInput
   difficulty: DifficultyUpdateOneWithoutNotesNestedInput
   text: StringFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutNotesNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -2743,6 +3048,7 @@ input NoteUpdateWithoutDanceStyleInput {
   danceMove: DanceMoveUpdateOneWithoutNotesNestedInput
   difficulty: DifficultyUpdateOneWithoutNotesNestedInput
   text: StringFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutNotesNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -2750,6 +3056,16 @@ input NoteUpdateWithoutDifficultyInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   danceMove: DanceMoveUpdateOneWithoutNotesNestedInput
   danceStyle: DanceStyleUpdateOneWithoutNotesNestedInput
+  text: StringFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutNotesNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input NoteUpdateWithoutTransitionInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMove: DanceMoveUpdateOneWithoutNotesNestedInput
+  danceStyle: DanceStyleUpdateOneWithoutNotesNestedInput
+  difficulty: DifficultyUpdateOneWithoutNotesNestedInput
   text: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -2772,6 +3088,12 @@ input NoteUpsertWithWhereUniqueWithoutDifficultyInput {
   where: NoteWhereUniqueInput!
 }
 
+input NoteUpsertWithWhereUniqueWithoutTransitionInput {
+  create: NoteCreateWithoutTransitionInput!
+  update: NoteUpdateWithoutTransitionInput!
+  where: NoteWhereUniqueInput!
+}
+
 input NoteWhereInput {
   AND: [NoteWhereInput!]
   NOT: [NoteWhereInput!]
@@ -2785,6 +3107,8 @@ input NoteWhereInput {
   difficultyId: IntNullableFilter
   id: IntFilter
   text: StringFilter
+  transition: TransitionNullableRelationFilter
+  transitionId: IntNullableFilter
   updatedAt: DateTimeFilter
 }
 
@@ -2801,6 +3125,8 @@ input NoteWhereUniqueInput {
   difficultyId: IntNullableFilter
   id: Int
   text: StringFilter
+  transition: TransitionNullableRelationFilter
+  transitionId: IntNullableFilter
   updatedAt: DateTimeFilter
 }
 
@@ -2827,6 +3153,8 @@ type Query {
   aggregateDanceStyle(cursor: DanceStyleWhereUniqueInput, orderBy: [DanceStyleOrderByWithRelationInput!], skip: Int, take: Int, where: DanceStyleWhereInput): AggregateDanceStyle!
   aggregateDifficulty(cursor: DifficultyWhereUniqueInput, orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): AggregateDifficulty!
   aggregateNote(cursor: NoteWhereUniqueInput, orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): AggregateNote!
+  aggregateTransition(cursor: TransitionWhereUniqueInput, orderBy: [TransitionOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionWhereInput): AggregateTransition!
+  aggregateTransitionsAndMoves(cursor: TransitionsAndMovesWhereUniqueInput, orderBy: [TransitionsAndMovesOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): AggregateTransitionsAndMoves!
   creator(where: CreatorWhereUniqueInput!): Creator
   creators(cursor: CreatorWhereUniqueInput, distinct: [CreatorScalarFieldEnum!], orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): [Creator!]!
   danceMove(where: DanceMoveWhereUniqueInput!): DanceMove
@@ -2845,18 +3173,30 @@ type Query {
   findFirstDifficultyOrThrow(cursor: DifficultyWhereUniqueInput, distinct: [DifficultyScalarFieldEnum!], orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): Difficulty
   findFirstNote(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): Note
   findFirstNoteOrThrow(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): Note
+  findFirstTransition(cursor: TransitionWhereUniqueInput, distinct: [TransitionScalarFieldEnum!], orderBy: [TransitionOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionWhereInput): Transition
+  findFirstTransitionOrThrow(cursor: TransitionWhereUniqueInput, distinct: [TransitionScalarFieldEnum!], orderBy: [TransitionOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionWhereInput): Transition
+  findFirstTransitionsAndMoves(cursor: TransitionsAndMovesWhereUniqueInput, distinct: [TransitionsAndMovesScalarFieldEnum!], orderBy: [TransitionsAndMovesOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): TransitionsAndMoves
+  findFirstTransitionsAndMovesOrThrow(cursor: TransitionsAndMovesWhereUniqueInput, distinct: [TransitionsAndMovesScalarFieldEnum!], orderBy: [TransitionsAndMovesOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): TransitionsAndMoves
+  findManyTransitionsAndMoves(cursor: TransitionsAndMovesWhereUniqueInput, distinct: [TransitionsAndMovesScalarFieldEnum!], orderBy: [TransitionsAndMovesOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): [TransitionsAndMoves!]!
+  findUniqueTransitionsAndMoves(where: TransitionsAndMovesWhereUniqueInput!): TransitionsAndMoves
+  findUniqueTransitionsAndMovesOrThrow(where: TransitionsAndMovesWhereUniqueInput!): TransitionsAndMoves
   getCreator(where: CreatorWhereUniqueInput!): Creator
   getDanceMove(where: DanceMoveWhereUniqueInput!): DanceMove
   getDanceStyle(where: DanceStyleWhereUniqueInput!): DanceStyle
   getDifficulty(where: DifficultyWhereUniqueInput!): Difficulty
   getNote(where: NoteWhereUniqueInput!): Note
+  getTransition(where: TransitionWhereUniqueInput!): Transition
   groupByCreator(by: [CreatorScalarFieldEnum!]!, having: CreatorScalarWhereWithAggregatesInput, orderBy: [CreatorOrderByWithAggregationInput!], skip: Int, take: Int, where: CreatorWhereInput): [CreatorGroupBy!]!
   groupByDanceMove(by: [DanceMoveScalarFieldEnum!]!, having: DanceMoveScalarWhereWithAggregatesInput, orderBy: [DanceMoveOrderByWithAggregationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): [DanceMoveGroupBy!]!
   groupByDanceStyle(by: [DanceStyleScalarFieldEnum!]!, having: DanceStyleScalarWhereWithAggregatesInput, orderBy: [DanceStyleOrderByWithAggregationInput!], skip: Int, take: Int, where: DanceStyleWhereInput): [DanceStyleGroupBy!]!
   groupByDifficulty(by: [DifficultyScalarFieldEnum!]!, having: DifficultyScalarWhereWithAggregatesInput, orderBy: [DifficultyOrderByWithAggregationInput!], skip: Int, take: Int, where: DifficultyWhereInput): [DifficultyGroupBy!]!
   groupByNote(by: [NoteScalarFieldEnum!]!, having: NoteScalarWhereWithAggregatesInput, orderBy: [NoteOrderByWithAggregationInput!], skip: Int, take: Int, where: NoteWhereInput): [NoteGroupBy!]!
+  groupByTransition(by: [TransitionScalarFieldEnum!]!, having: TransitionScalarWhereWithAggregatesInput, orderBy: [TransitionOrderByWithAggregationInput!], skip: Int, take: Int, where: TransitionWhereInput): [TransitionGroupBy!]!
+  groupByTransitionsAndMoves(by: [TransitionsAndMovesScalarFieldEnum!]!, having: TransitionsAndMovesScalarWhereWithAggregatesInput, orderBy: [TransitionsAndMovesOrderByWithAggregationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): [TransitionsAndMovesGroupBy!]!
   note(where: NoteWhereUniqueInput!): Note
   notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
+  transition(where: TransitionWhereUniqueInput!): Transition
+  transitions(cursor: TransitionWhereUniqueInput, distinct: [TransitionScalarFieldEnum!], orderBy: [TransitionOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionWhereInput): [Transition!]!
 }
 
 enum QueryMode {
@@ -2950,4 +3290,745 @@ input StringWithAggregatesFilter {
   not: NestedStringWithAggregatesFilter
   notIn: [String!]
   startsWith: String
+}
+
+type Transition {
+  _count: TransitionCount
+  createdAt: DateTimeISO!
+  danceMoves(cursor: TransitionsAndMovesWhereUniqueInput, distinct: [TransitionsAndMovesScalarFieldEnum!], orderBy: [TransitionsAndMovesOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): [TransitionsAndMoves!]!
+  dateLearned: DateTimeISO
+  datesReviewed: [DateTimeISO!]!
+  description: String
+  difficultyHistory(cursor: DifficultyWhereUniqueInput, distinct: [DifficultyScalarFieldEnum!], orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): [Difficulty!]!
+  id: Int!
+  name: String
+  notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
+  updatedAt: DateTimeISO!
+}
+
+type TransitionAvgAggregate {
+  id: Float
+}
+
+input TransitionAvgOrderByAggregateInput {
+  id: SortOrder
+}
+
+type TransitionCount {
+  danceMoves(where: TransitionsAndMovesWhereInput): Int!
+  difficultyHistory(where: DifficultyWhereInput): Int!
+  notes(where: NoteWhereInput): Int!
+}
+
+type TransitionCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  dateLearned: Int!
+  datesReviewed: Int!
+  description: Int!
+  id: Int!
+  name: Int!
+  updatedAt: Int!
+}
+
+input TransitionCountOrderByAggregateInput {
+  createdAt: SortOrder
+  dateLearned: SortOrder
+  datesReviewed: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+input TransitionCreateInput {
+  createdAt: DateTimeISO
+  danceMoves: TransitionsAndMovesCreateNestedManyWithoutTransitionInput
+  dateLearned: DateTimeISO
+  datesReviewed: TransitionCreatedatesReviewedInput
+  description: String
+  difficultyHistory: DifficultyCreateNestedManyWithoutTransitionInput
+  name: String
+  notes: NoteCreateNestedManyWithoutTransitionInput
+  updatedAt: DateTimeISO
+}
+
+input TransitionCreateManyInput {
+  createdAt: DateTimeISO
+  dateLearned: DateTimeISO
+  datesReviewed: TransitionCreatedatesReviewedInput
+  description: String
+  id: Int
+  name: String
+  updatedAt: DateTimeISO
+}
+
+input TransitionCreateNestedOneWithoutDanceMovesInput {
+  connect: TransitionWhereUniqueInput
+  connectOrCreate: TransitionCreateOrConnectWithoutDanceMovesInput
+  create: TransitionCreateWithoutDanceMovesInput
+}
+
+input TransitionCreateNestedOneWithoutDifficultyHistoryInput {
+  connect: TransitionWhereUniqueInput
+  connectOrCreate: TransitionCreateOrConnectWithoutDifficultyHistoryInput
+  create: TransitionCreateWithoutDifficultyHistoryInput
+}
+
+input TransitionCreateNestedOneWithoutNotesInput {
+  connect: TransitionWhereUniqueInput
+  connectOrCreate: TransitionCreateOrConnectWithoutNotesInput
+  create: TransitionCreateWithoutNotesInput
+}
+
+input TransitionCreateOrConnectWithoutDanceMovesInput {
+  create: TransitionCreateWithoutDanceMovesInput!
+  where: TransitionWhereUniqueInput!
+}
+
+input TransitionCreateOrConnectWithoutDifficultyHistoryInput {
+  create: TransitionCreateWithoutDifficultyHistoryInput!
+  where: TransitionWhereUniqueInput!
+}
+
+input TransitionCreateOrConnectWithoutNotesInput {
+  create: TransitionCreateWithoutNotesInput!
+  where: TransitionWhereUniqueInput!
+}
+
+input TransitionCreateWithoutDanceMovesInput {
+  createdAt: DateTimeISO
+  dateLearned: DateTimeISO
+  datesReviewed: TransitionCreatedatesReviewedInput
+  description: String
+  difficultyHistory: DifficultyCreateNestedManyWithoutTransitionInput
+  name: String
+  notes: NoteCreateNestedManyWithoutTransitionInput
+  updatedAt: DateTimeISO
+}
+
+input TransitionCreateWithoutDifficultyHistoryInput {
+  createdAt: DateTimeISO
+  danceMoves: TransitionsAndMovesCreateNestedManyWithoutTransitionInput
+  dateLearned: DateTimeISO
+  datesReviewed: TransitionCreatedatesReviewedInput
+  description: String
+  name: String
+  notes: NoteCreateNestedManyWithoutTransitionInput
+  updatedAt: DateTimeISO
+}
+
+input TransitionCreateWithoutNotesInput {
+  createdAt: DateTimeISO
+  danceMoves: TransitionsAndMovesCreateNestedManyWithoutTransitionInput
+  dateLearned: DateTimeISO
+  datesReviewed: TransitionCreatedatesReviewedInput
+  description: String
+  difficultyHistory: DifficultyCreateNestedManyWithoutTransitionInput
+  name: String
+  updatedAt: DateTimeISO
+}
+
+input TransitionCreatedatesReviewedInput {
+  set: [DateTimeISO!]!
+}
+
+type TransitionGroupBy {
+  _avg: TransitionAvgAggregate
+  _count: TransitionCountAggregate
+  _max: TransitionMaxAggregate
+  _min: TransitionMinAggregate
+  _sum: TransitionSumAggregate
+  createdAt: DateTimeISO!
+  dateLearned: DateTimeISO
+  datesReviewed: [DateTimeISO!]
+  description: String
+  id: Int!
+  name: String
+  updatedAt: DateTimeISO!
+}
+
+type TransitionMaxAggregate {
+  createdAt: DateTimeISO
+  dateLearned: DateTimeISO
+  description: String
+  id: Int
+  name: String
+  updatedAt: DateTimeISO
+}
+
+input TransitionMaxOrderByAggregateInput {
+  createdAt: SortOrder
+  dateLearned: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+type TransitionMinAggregate {
+  createdAt: DateTimeISO
+  dateLearned: DateTimeISO
+  description: String
+  id: Int
+  name: String
+  updatedAt: DateTimeISO
+}
+
+input TransitionMinOrderByAggregateInput {
+  createdAt: SortOrder
+  dateLearned: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+input TransitionNullableRelationFilter {
+  is: TransitionWhereInput
+  isNot: TransitionWhereInput
+}
+
+input TransitionOrderByWithAggregationInput {
+  _avg: TransitionAvgOrderByAggregateInput
+  _count: TransitionCountOrderByAggregateInput
+  _max: TransitionMaxOrderByAggregateInput
+  _min: TransitionMinOrderByAggregateInput
+  _sum: TransitionSumOrderByAggregateInput
+  createdAt: SortOrder
+  dateLearned: SortOrderInput
+  datesReviewed: SortOrder
+  description: SortOrderInput
+  id: SortOrder
+  name: SortOrderInput
+  updatedAt: SortOrder
+}
+
+input TransitionOrderByWithRelationInput {
+  createdAt: SortOrder
+  danceMoves: TransitionsAndMovesOrderByRelationAggregateInput
+  dateLearned: SortOrderInput
+  datesReviewed: SortOrder
+  description: SortOrderInput
+  difficultyHistory: DifficultyOrderByRelationAggregateInput
+  id: SortOrder
+  name: SortOrderInput
+  notes: NoteOrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+input TransitionRelationFilter {
+  is: TransitionWhereInput
+  isNot: TransitionWhereInput
+}
+
+enum TransitionScalarFieldEnum {
+  createdAt
+  dateLearned
+  datesReviewed
+  description
+  id
+  name
+  updatedAt
+}
+
+input TransitionScalarWhereWithAggregatesInput {
+  AND: [TransitionScalarWhereWithAggregatesInput!]
+  NOT: [TransitionScalarWhereWithAggregatesInput!]
+  OR: [TransitionScalarWhereWithAggregatesInput!]
+  createdAt: DateTimeWithAggregatesFilter
+  dateLearned: DateTimeNullableWithAggregatesFilter
+  datesReviewed: DateTimeNullableListFilter
+  description: StringNullableWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  name: StringNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+type TransitionSumAggregate {
+  id: Int
+}
+
+input TransitionSumOrderByAggregateInput {
+  id: SortOrder
+}
+
+input TransitionUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMoves: TransitionsAndMovesUpdateManyWithoutTransitionNestedInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: TransitionUpdatedatesReviewedInput
+  description: NullableStringFieldUpdateOperationsInput
+  difficultyHistory: DifficultyUpdateManyWithoutTransitionNestedInput
+  name: NullableStringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutTransitionNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: TransitionUpdatedatesReviewedInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionUpdateOneRequiredWithoutDanceMovesNestedInput {
+  connect: TransitionWhereUniqueInput
+  connectOrCreate: TransitionCreateOrConnectWithoutDanceMovesInput
+  create: TransitionCreateWithoutDanceMovesInput
+  update: TransitionUpdateToOneWithWhereWithoutDanceMovesInput
+  upsert: TransitionUpsertWithoutDanceMovesInput
+}
+
+input TransitionUpdateOneWithoutDifficultyHistoryNestedInput {
+  connect: TransitionWhereUniqueInput
+  connectOrCreate: TransitionCreateOrConnectWithoutDifficultyHistoryInput
+  create: TransitionCreateWithoutDifficultyHistoryInput
+  delete: TransitionWhereInput
+  disconnect: TransitionWhereInput
+  update: TransitionUpdateToOneWithWhereWithoutDifficultyHistoryInput
+  upsert: TransitionUpsertWithoutDifficultyHistoryInput
+}
+
+input TransitionUpdateOneWithoutNotesNestedInput {
+  connect: TransitionWhereUniqueInput
+  connectOrCreate: TransitionCreateOrConnectWithoutNotesInput
+  create: TransitionCreateWithoutNotesInput
+  delete: TransitionWhereInput
+  disconnect: TransitionWhereInput
+  update: TransitionUpdateToOneWithWhereWithoutNotesInput
+  upsert: TransitionUpsertWithoutNotesInput
+}
+
+input TransitionUpdateToOneWithWhereWithoutDanceMovesInput {
+  data: TransitionUpdateWithoutDanceMovesInput!
+  where: TransitionWhereInput
+}
+
+input TransitionUpdateToOneWithWhereWithoutDifficultyHistoryInput {
+  data: TransitionUpdateWithoutDifficultyHistoryInput!
+  where: TransitionWhereInput
+}
+
+input TransitionUpdateToOneWithWhereWithoutNotesInput {
+  data: TransitionUpdateWithoutNotesInput!
+  where: TransitionWhereInput
+}
+
+input TransitionUpdateWithoutDanceMovesInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: TransitionUpdatedatesReviewedInput
+  description: NullableStringFieldUpdateOperationsInput
+  difficultyHistory: DifficultyUpdateManyWithoutTransitionNestedInput
+  name: NullableStringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutTransitionNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionUpdateWithoutDifficultyHistoryInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMoves: TransitionsAndMovesUpdateManyWithoutTransitionNestedInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: TransitionUpdatedatesReviewedInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutTransitionNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionUpdateWithoutNotesInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMoves: TransitionsAndMovesUpdateManyWithoutTransitionNestedInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: TransitionUpdatedatesReviewedInput
+  description: NullableStringFieldUpdateOperationsInput
+  difficultyHistory: DifficultyUpdateManyWithoutTransitionNestedInput
+  name: NullableStringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionUpdatedatesReviewedInput {
+  push: [DateTimeISO!]
+  set: [DateTimeISO!]
+}
+
+input TransitionUpsertWithoutDanceMovesInput {
+  create: TransitionCreateWithoutDanceMovesInput!
+  update: TransitionUpdateWithoutDanceMovesInput!
+  where: TransitionWhereInput
+}
+
+input TransitionUpsertWithoutDifficultyHistoryInput {
+  create: TransitionCreateWithoutDifficultyHistoryInput!
+  update: TransitionUpdateWithoutDifficultyHistoryInput!
+  where: TransitionWhereInput
+}
+
+input TransitionUpsertWithoutNotesInput {
+  create: TransitionCreateWithoutNotesInput!
+  update: TransitionUpdateWithoutNotesInput!
+  where: TransitionWhereInput
+}
+
+input TransitionWhereInput {
+  AND: [TransitionWhereInput!]
+  NOT: [TransitionWhereInput!]
+  OR: [TransitionWhereInput!]
+  createdAt: DateTimeFilter
+  danceMoves: TransitionsAndMovesListRelationFilter
+  dateLearned: DateTimeNullableFilter
+  datesReviewed: DateTimeNullableListFilter
+  description: StringNullableFilter
+  difficultyHistory: DifficultyListRelationFilter
+  id: IntFilter
+  name: StringNullableFilter
+  notes: NoteListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+input TransitionWhereUniqueInput {
+  AND: [TransitionWhereInput!]
+  NOT: [TransitionWhereInput!]
+  OR: [TransitionWhereInput!]
+  createdAt: DateTimeFilter
+  danceMoves: TransitionsAndMovesListRelationFilter
+  dateLearned: DateTimeNullableFilter
+  datesReviewed: DateTimeNullableListFilter
+  description: StringNullableFilter
+  difficultyHistory: DifficultyListRelationFilter
+  id: Int
+  name: StringNullableFilter
+  notes: NoteListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+type TransitionsAndMoves {
+  createdAt: DateTimeISO!
+  danceMove: DanceMove!
+  danceMoveId: Int!
+  transition: Transition!
+  transitionId: Int!
+  updatedAt: DateTimeISO!
+}
+
+type TransitionsAndMovesAvgAggregate {
+  danceMoveId: Float
+  transitionId: Float
+}
+
+input TransitionsAndMovesAvgOrderByAggregateInput {
+  danceMoveId: SortOrder
+  transitionId: SortOrder
+}
+
+type TransitionsAndMovesCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  danceMoveId: Int!
+  transitionId: Int!
+  updatedAt: Int!
+}
+
+input TransitionsAndMovesCountOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  transitionId: SortOrder
+  updatedAt: SortOrder
+}
+
+input TransitionsAndMovesCreateInput {
+  createdAt: DateTimeISO
+  danceMove: DanceMoveCreateNestedOneWithoutTransitionsInput!
+  transition: TransitionCreateNestedOneWithoutDanceMovesInput!
+  updatedAt: DateTimeISO
+}
+
+input TransitionsAndMovesCreateManyDanceMoveInput {
+  createdAt: DateTimeISO
+  transitionId: Int!
+  updatedAt: DateTimeISO
+}
+
+input TransitionsAndMovesCreateManyDanceMoveInputEnvelope {
+  data: [TransitionsAndMovesCreateManyDanceMoveInput!]!
+  skipDuplicates: Boolean
+}
+
+input TransitionsAndMovesCreateManyInput {
+  createdAt: DateTimeISO
+  danceMoveId: Int!
+  transitionId: Int!
+  updatedAt: DateTimeISO
+}
+
+input TransitionsAndMovesCreateManyTransitionInput {
+  createdAt: DateTimeISO
+  danceMoveId: Int!
+  updatedAt: DateTimeISO
+}
+
+input TransitionsAndMovesCreateManyTransitionInputEnvelope {
+  data: [TransitionsAndMovesCreateManyTransitionInput!]!
+  skipDuplicates: Boolean
+}
+
+input TransitionsAndMovesCreateNestedManyWithoutDanceMoveInput {
+  connect: [TransitionsAndMovesWhereUniqueInput!]
+  connectOrCreate: [TransitionsAndMovesCreateOrConnectWithoutDanceMoveInput!]
+  create: [TransitionsAndMovesCreateWithoutDanceMoveInput!]
+  createMany: TransitionsAndMovesCreateManyDanceMoveInputEnvelope
+}
+
+input TransitionsAndMovesCreateNestedManyWithoutTransitionInput {
+  connect: [TransitionsAndMovesWhereUniqueInput!]
+  connectOrCreate: [TransitionsAndMovesCreateOrConnectWithoutTransitionInput!]
+  create: [TransitionsAndMovesCreateWithoutTransitionInput!]
+  createMany: TransitionsAndMovesCreateManyTransitionInputEnvelope
+}
+
+input TransitionsAndMovesCreateOrConnectWithoutDanceMoveInput {
+  create: TransitionsAndMovesCreateWithoutDanceMoveInput!
+  where: TransitionsAndMovesWhereUniqueInput!
+}
+
+input TransitionsAndMovesCreateOrConnectWithoutTransitionInput {
+  create: TransitionsAndMovesCreateWithoutTransitionInput!
+  where: TransitionsAndMovesWhereUniqueInput!
+}
+
+input TransitionsAndMovesCreateWithoutDanceMoveInput {
+  createdAt: DateTimeISO
+  transition: TransitionCreateNestedOneWithoutDanceMovesInput!
+  updatedAt: DateTimeISO
+}
+
+input TransitionsAndMovesCreateWithoutTransitionInput {
+  createdAt: DateTimeISO
+  danceMove: DanceMoveCreateNestedOneWithoutTransitionsInput!
+  updatedAt: DateTimeISO
+}
+
+input TransitionsAndMovesDanceMoveIdTransitionIdCompoundUniqueInput {
+  danceMoveId: Int!
+  transitionId: Int!
+}
+
+type TransitionsAndMovesGroupBy {
+  _avg: TransitionsAndMovesAvgAggregate
+  _count: TransitionsAndMovesCountAggregate
+  _max: TransitionsAndMovesMaxAggregate
+  _min: TransitionsAndMovesMinAggregate
+  _sum: TransitionsAndMovesSumAggregate
+  createdAt: DateTimeISO!
+  danceMoveId: Int!
+  transitionId: Int!
+  updatedAt: DateTimeISO!
+}
+
+input TransitionsAndMovesListRelationFilter {
+  every: TransitionsAndMovesWhereInput
+  none: TransitionsAndMovesWhereInput
+  some: TransitionsAndMovesWhereInput
+}
+
+type TransitionsAndMovesMaxAggregate {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  transitionId: Int
+  updatedAt: DateTimeISO
+}
+
+input TransitionsAndMovesMaxOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  transitionId: SortOrder
+  updatedAt: SortOrder
+}
+
+type TransitionsAndMovesMinAggregate {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  transitionId: Int
+  updatedAt: DateTimeISO
+}
+
+input TransitionsAndMovesMinOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  transitionId: SortOrder
+  updatedAt: SortOrder
+}
+
+input TransitionsAndMovesOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TransitionsAndMovesOrderByWithAggregationInput {
+  _avg: TransitionsAndMovesAvgOrderByAggregateInput
+  _count: TransitionsAndMovesCountOrderByAggregateInput
+  _max: TransitionsAndMovesMaxOrderByAggregateInput
+  _min: TransitionsAndMovesMinOrderByAggregateInput
+  _sum: TransitionsAndMovesSumOrderByAggregateInput
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  transitionId: SortOrder
+  updatedAt: SortOrder
+}
+
+input TransitionsAndMovesOrderByWithRelationInput {
+  createdAt: SortOrder
+  danceMove: DanceMoveOrderByWithRelationInput
+  danceMoveId: SortOrder
+  transition: TransitionOrderByWithRelationInput
+  transitionId: SortOrder
+  updatedAt: SortOrder
+}
+
+enum TransitionsAndMovesScalarFieldEnum {
+  createdAt
+  danceMoveId
+  transitionId
+  updatedAt
+}
+
+input TransitionsAndMovesScalarWhereInput {
+  AND: [TransitionsAndMovesScalarWhereInput!]
+  NOT: [TransitionsAndMovesScalarWhereInput!]
+  OR: [TransitionsAndMovesScalarWhereInput!]
+  createdAt: DateTimeFilter
+  danceMoveId: IntFilter
+  transitionId: IntFilter
+  updatedAt: DateTimeFilter
+}
+
+input TransitionsAndMovesScalarWhereWithAggregatesInput {
+  AND: [TransitionsAndMovesScalarWhereWithAggregatesInput!]
+  NOT: [TransitionsAndMovesScalarWhereWithAggregatesInput!]
+  OR: [TransitionsAndMovesScalarWhereWithAggregatesInput!]
+  createdAt: DateTimeWithAggregatesFilter
+  danceMoveId: IntWithAggregatesFilter
+  transitionId: IntWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+type TransitionsAndMovesSumAggregate {
+  danceMoveId: Int
+  transitionId: Int
+}
+
+input TransitionsAndMovesSumOrderByAggregateInput {
+  danceMoveId: SortOrder
+  transitionId: SortOrder
+}
+
+input TransitionsAndMovesUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMove: DanceMoveUpdateOneRequiredWithoutTransitionsNestedInput
+  transition: TransitionUpdateOneRequiredWithoutDanceMovesNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionsAndMovesUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionsAndMovesUpdateManyWithWhereWithoutDanceMoveInput {
+  data: TransitionsAndMovesUpdateManyMutationInput!
+  where: TransitionsAndMovesScalarWhereInput!
+}
+
+input TransitionsAndMovesUpdateManyWithWhereWithoutTransitionInput {
+  data: TransitionsAndMovesUpdateManyMutationInput!
+  where: TransitionsAndMovesScalarWhereInput!
+}
+
+input TransitionsAndMovesUpdateManyWithoutDanceMoveNestedInput {
+  connect: [TransitionsAndMovesWhereUniqueInput!]
+  connectOrCreate: [TransitionsAndMovesCreateOrConnectWithoutDanceMoveInput!]
+  create: [TransitionsAndMovesCreateWithoutDanceMoveInput!]
+  createMany: TransitionsAndMovesCreateManyDanceMoveInputEnvelope
+  delete: [TransitionsAndMovesWhereUniqueInput!]
+  deleteMany: [TransitionsAndMovesScalarWhereInput!]
+  disconnect: [TransitionsAndMovesWhereUniqueInput!]
+  set: [TransitionsAndMovesWhereUniqueInput!]
+  update: [TransitionsAndMovesUpdateWithWhereUniqueWithoutDanceMoveInput!]
+  updateMany: [TransitionsAndMovesUpdateManyWithWhereWithoutDanceMoveInput!]
+  upsert: [TransitionsAndMovesUpsertWithWhereUniqueWithoutDanceMoveInput!]
+}
+
+input TransitionsAndMovesUpdateManyWithoutTransitionNestedInput {
+  connect: [TransitionsAndMovesWhereUniqueInput!]
+  connectOrCreate: [TransitionsAndMovesCreateOrConnectWithoutTransitionInput!]
+  create: [TransitionsAndMovesCreateWithoutTransitionInput!]
+  createMany: TransitionsAndMovesCreateManyTransitionInputEnvelope
+  delete: [TransitionsAndMovesWhereUniqueInput!]
+  deleteMany: [TransitionsAndMovesScalarWhereInput!]
+  disconnect: [TransitionsAndMovesWhereUniqueInput!]
+  set: [TransitionsAndMovesWhereUniqueInput!]
+  update: [TransitionsAndMovesUpdateWithWhereUniqueWithoutTransitionInput!]
+  updateMany: [TransitionsAndMovesUpdateManyWithWhereWithoutTransitionInput!]
+  upsert: [TransitionsAndMovesUpsertWithWhereUniqueWithoutTransitionInput!]
+}
+
+input TransitionsAndMovesUpdateWithWhereUniqueWithoutDanceMoveInput {
+  data: TransitionsAndMovesUpdateWithoutDanceMoveInput!
+  where: TransitionsAndMovesWhereUniqueInput!
+}
+
+input TransitionsAndMovesUpdateWithWhereUniqueWithoutTransitionInput {
+  data: TransitionsAndMovesUpdateWithoutTransitionInput!
+  where: TransitionsAndMovesWhereUniqueInput!
+}
+
+input TransitionsAndMovesUpdateWithoutDanceMoveInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  transition: TransitionUpdateOneRequiredWithoutDanceMovesNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionsAndMovesUpdateWithoutTransitionInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMove: DanceMoveUpdateOneRequiredWithoutTransitionsNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input TransitionsAndMovesUpsertWithWhereUniqueWithoutDanceMoveInput {
+  create: TransitionsAndMovesCreateWithoutDanceMoveInput!
+  update: TransitionsAndMovesUpdateWithoutDanceMoveInput!
+  where: TransitionsAndMovesWhereUniqueInput!
+}
+
+input TransitionsAndMovesUpsertWithWhereUniqueWithoutTransitionInput {
+  create: TransitionsAndMovesCreateWithoutTransitionInput!
+  update: TransitionsAndMovesUpdateWithoutTransitionInput!
+  where: TransitionsAndMovesWhereUniqueInput!
+}
+
+input TransitionsAndMovesWhereInput {
+  AND: [TransitionsAndMovesWhereInput!]
+  NOT: [TransitionsAndMovesWhereInput!]
+  OR: [TransitionsAndMovesWhereInput!]
+  createdAt: DateTimeFilter
+  danceMove: DanceMoveRelationFilter
+  danceMoveId: IntFilter
+  transition: TransitionRelationFilter
+  transitionId: IntFilter
+  updatedAt: DateTimeFilter
+}
+
+input TransitionsAndMovesWhereUniqueInput {
+  AND: [TransitionsAndMovesWhereInput!]
+  NOT: [TransitionsAndMovesWhereInput!]
+  OR: [TransitionsAndMovesWhereInput!]
+  createdAt: DateTimeFilter
+  danceMove: DanceMoveRelationFilter
+  danceMoveId: IntFilter
+  danceMoveId_transitionId: TransitionsAndMovesDanceMoveIdTransitionIdCompoundUniqueInput
+  transition: TransitionRelationFilter
+  transitionId: IntFilter
+  updatedAt: DateTimeFilter
 }
