@@ -15,11 +15,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Era {
+  OLD_SCHOOL
+  NEW_SCHOOL
+}
+
 model DanceMove {
   id        Int      @id @default(autoincrement())
-  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Information about the dance move
+  name            String
+  aliases         String[]
+  tutorials       String[] // currently just links. Might be better to create a Tutorial model
+  countryOfOrigin String?
+  dateCreated     DateTime?
+  era             Era?
+  officialSong    String?
+
+  // Info about learning the dance move
+  dateLearned   DateTime?
+  datesReviewed DateTime[]
 
   // Relation to Creator
   creator   Creator? @relation(fields: [creatorId], references: [id])
