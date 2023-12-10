@@ -35,8 +35,9 @@ model DanceMove {
   officialSong    String?
 
   // Info about learning the dance move
-  dateLearned   DateTime?
-  datesReviewed DateTime[]
+  dateLearned       DateTime?
+  datesReviewed     DateTime[]
+  difficultyHistory Difficulty[]
 
   // Relation to Creator
   creator   Creator? @relation(fields: [creatorId], references: [id])
@@ -51,4 +52,18 @@ model Creator {
 
   // Relation to DanceMove
   danceMove DanceMove[]
+}
+
+model Difficulty {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the difficulty
+  date   DateTime
+  rating Int
+
+  // Relation to DanceMove
+  danceMove   DanceMove @relation(fields: [danceMoveId], references: [id])
+  danceMoveId Int
 }

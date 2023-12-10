@@ -23,6 +23,14 @@ type AggregateDanceMove {
   _sum: DanceMoveSumAggregate
 }
 
+type AggregateDifficulty {
+  _avg: DifficultyAvgAggregate
+  _count: DifficultyCountAggregate
+  _max: DifficultyMaxAggregate
+  _min: DifficultyMinAggregate
+  _sum: DifficultySumAggregate
+}
+
 type Creator {
   _count: CreatorCount
   createdAt: DateTimeISO!
@@ -243,6 +251,7 @@ input CreatorWhereUniqueInput {
 }
 
 type DanceMove {
+  _count: DanceMoveCount
   aliases: [String!]!
   countryOfOrigin: String
   createdAt: DateTimeISO!
@@ -251,6 +260,7 @@ type DanceMove {
   dateCreated: DateTimeISO
   dateLearned: DateTimeISO
   datesReviewed: [DateTimeISO!]!
+  difficultyHistory(cursor: DifficultyWhereUniqueInput, distinct: [DifficultyScalarFieldEnum!], orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): [Difficulty!]!
   era: Era
   id: Int!
   name: String!
@@ -267,6 +277,10 @@ type DanceMoveAvgAggregate {
 input DanceMoveAvgOrderByAggregateInput {
   creatorId: SortOrder
   id: SortOrder
+}
+
+type DanceMoveCount {
+  difficultyHistory(where: DifficultyWhereInput): Int!
 }
 
 type DanceMoveCountAggregate {
@@ -310,6 +324,7 @@ input DanceMoveCreateInput {
   dateCreated: DateTimeISO
   dateLearned: DateTimeISO
   datesReviewed: DanceMoveCreatedatesReviewedInput
+  difficultyHistory: DifficultyCreateNestedManyWithoutDanceMoveInput
   era: Era
   name: String!
   officialSong: String
@@ -360,8 +375,19 @@ input DanceMoveCreateNestedManyWithoutCreatorInput {
   createMany: DanceMoveCreateManyCreatorInputEnvelope
 }
 
+input DanceMoveCreateNestedOneWithoutDifficultyHistoryInput {
+  connect: DanceMoveWhereUniqueInput
+  connectOrCreate: DanceMoveCreateOrConnectWithoutDifficultyHistoryInput
+  create: DanceMoveCreateWithoutDifficultyHistoryInput
+}
+
 input DanceMoveCreateOrConnectWithoutCreatorInput {
   create: DanceMoveCreateWithoutCreatorInput!
+  where: DanceMoveWhereUniqueInput!
+}
+
+input DanceMoveCreateOrConnectWithoutDifficultyHistoryInput {
+  create: DanceMoveCreateWithoutDifficultyHistoryInput!
   where: DanceMoveWhereUniqueInput!
 }
 
@@ -369,6 +395,22 @@ input DanceMoveCreateWithoutCreatorInput {
   aliases: DanceMoveCreatealiasesInput
   countryOfOrigin: String
   createdAt: DateTimeISO
+  dateCreated: DateTimeISO
+  dateLearned: DateTimeISO
+  datesReviewed: DanceMoveCreatedatesReviewedInput
+  difficultyHistory: DifficultyCreateNestedManyWithoutDanceMoveInput
+  era: Era
+  name: String!
+  officialSong: String
+  tutorials: DanceMoveCreatetutorialsInput
+  updatedAt: DateTimeISO
+}
+
+input DanceMoveCreateWithoutDifficultyHistoryInput {
+  aliases: DanceMoveCreatealiasesInput
+  countryOfOrigin: String
+  createdAt: DateTimeISO
+  creator: CreatorCreateNestedOneWithoutDanceMoveInput
   dateCreated: DateTimeISO
   dateLearned: DateTimeISO
   datesReviewed: DanceMoveCreatedatesReviewedInput
@@ -504,12 +546,18 @@ input DanceMoveOrderByWithRelationInput {
   dateCreated: SortOrderInput
   dateLearned: SortOrderInput
   datesReviewed: SortOrder
+  difficultyHistory: DifficultyOrderByRelationAggregateInput
   era: SortOrderInput
   id: SortOrder
   name: SortOrder
   officialSong: SortOrderInput
   tutorials: SortOrder
   updatedAt: SortOrder
+}
+
+input DanceMoveRelationFilter {
+  is: DanceMoveWhereInput
+  isNot: DanceMoveWhereInput
 }
 
 enum DanceMoveScalarFieldEnum {
@@ -584,6 +632,7 @@ input DanceMoveUpdateInput {
   dateCreated: NullableDateTimeFieldUpdateOperationsInput
   dateLearned: NullableDateTimeFieldUpdateOperationsInput
   datesReviewed: DanceMoveUpdatedatesReviewedInput
+  difficultyHistory: DifficultyUpdateManyWithoutDanceMoveNestedInput
   era: NullableEnumEraFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   officialSong: NullableStringFieldUpdateOperationsInput
@@ -624,6 +673,19 @@ input DanceMoveUpdateManyWithoutCreatorNestedInput {
   upsert: [DanceMoveUpsertWithWhereUniqueWithoutCreatorInput!]
 }
 
+input DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput {
+  connect: DanceMoveWhereUniqueInput
+  connectOrCreate: DanceMoveCreateOrConnectWithoutDifficultyHistoryInput
+  create: DanceMoveCreateWithoutDifficultyHistoryInput
+  update: DanceMoveUpdateToOneWithWhereWithoutDifficultyHistoryInput
+  upsert: DanceMoveUpsertWithoutDifficultyHistoryInput
+}
+
+input DanceMoveUpdateToOneWithWhereWithoutDifficultyHistoryInput {
+  data: DanceMoveUpdateWithoutDifficultyHistoryInput!
+  where: DanceMoveWhereInput
+}
+
 input DanceMoveUpdateWithWhereUniqueWithoutCreatorInput {
   data: DanceMoveUpdateWithoutCreatorInput!
   where: DanceMoveWhereUniqueInput!
@@ -633,6 +695,22 @@ input DanceMoveUpdateWithoutCreatorInput {
   aliases: DanceMoveUpdatealiasesInput
   countryOfOrigin: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  dateCreated: NullableDateTimeFieldUpdateOperationsInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: DanceMoveUpdatedatesReviewedInput
+  difficultyHistory: DifficultyUpdateManyWithoutDanceMoveNestedInput
+  era: NullableEnumEraFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  officialSong: NullableStringFieldUpdateOperationsInput
+  tutorials: DanceMoveUpdatetutorialsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DanceMoveUpdateWithoutDifficultyHistoryInput {
+  aliases: DanceMoveUpdatealiasesInput
+  countryOfOrigin: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  creator: CreatorUpdateOneWithoutDanceMoveNestedInput
   dateCreated: NullableDateTimeFieldUpdateOperationsInput
   dateLearned: NullableDateTimeFieldUpdateOperationsInput
   datesReviewed: DanceMoveUpdatedatesReviewedInput
@@ -664,6 +742,12 @@ input DanceMoveUpsertWithWhereUniqueWithoutCreatorInput {
   where: DanceMoveWhereUniqueInput!
 }
 
+input DanceMoveUpsertWithoutDifficultyHistoryInput {
+  create: DanceMoveCreateWithoutDifficultyHistoryInput!
+  update: DanceMoveUpdateWithoutDifficultyHistoryInput!
+  where: DanceMoveWhereInput
+}
+
 input DanceMoveWhereInput {
   AND: [DanceMoveWhereInput!]
   NOT: [DanceMoveWhereInput!]
@@ -676,6 +760,7 @@ input DanceMoveWhereInput {
   dateCreated: DateTimeNullableFilter
   dateLearned: DateTimeNullableFilter
   datesReviewed: DateTimeNullableListFilter
+  difficultyHistory: DifficultyListRelationFilter
   era: EnumEraNullableFilter
   id: IntFilter
   name: StringFilter
@@ -696,6 +781,7 @@ input DanceMoveWhereUniqueInput {
   dateCreated: DateTimeNullableFilter
   dateLearned: DateTimeNullableFilter
   datesReviewed: DateTimeNullableListFilter
+  difficultyHistory: DifficultyListRelationFilter
   era: EnumEraNullableFilter
   id: Int
   name: StringFilter
@@ -771,6 +857,303 @@ input DateTimeWithAggregatesFilter {
   notIn: [DateTimeISO!]
 }
 
+type Difficulty {
+  createdAt: DateTimeISO!
+  danceMove: DanceMove!
+  danceMoveId: Int!
+  date: DateTimeISO!
+  id: Int!
+  rating: Int!
+  updatedAt: DateTimeISO!
+}
+
+type DifficultyAvgAggregate {
+  danceMoveId: Float
+  id: Float
+  rating: Float
+}
+
+input DifficultyAvgOrderByAggregateInput {
+  danceMoveId: SortOrder
+  id: SortOrder
+  rating: SortOrder
+}
+
+type DifficultyCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  danceMoveId: Int!
+  date: Int!
+  id: Int!
+  rating: Int!
+  updatedAt: Int!
+}
+
+input DifficultyCountOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  date: SortOrder
+  id: SortOrder
+  rating: SortOrder
+  updatedAt: SortOrder
+}
+
+input DifficultyCreateInput {
+  createdAt: DateTimeISO
+  danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput!
+  date: DateTimeISO!
+  rating: Int!
+  updatedAt: DateTimeISO
+}
+
+input DifficultyCreateManyDanceMoveInput {
+  createdAt: DateTimeISO
+  date: DateTimeISO!
+  id: Int
+  rating: Int!
+  updatedAt: DateTimeISO
+}
+
+input DifficultyCreateManyDanceMoveInputEnvelope {
+  data: [DifficultyCreateManyDanceMoveInput!]!
+  skipDuplicates: Boolean
+}
+
+input DifficultyCreateManyInput {
+  createdAt: DateTimeISO
+  danceMoveId: Int!
+  date: DateTimeISO!
+  id: Int
+  rating: Int!
+  updatedAt: DateTimeISO
+}
+
+input DifficultyCreateNestedManyWithoutDanceMoveInput {
+  connect: [DifficultyWhereUniqueInput!]
+  connectOrCreate: [DifficultyCreateOrConnectWithoutDanceMoveInput!]
+  create: [DifficultyCreateWithoutDanceMoveInput!]
+  createMany: DifficultyCreateManyDanceMoveInputEnvelope
+}
+
+input DifficultyCreateOrConnectWithoutDanceMoveInput {
+  create: DifficultyCreateWithoutDanceMoveInput!
+  where: DifficultyWhereUniqueInput!
+}
+
+input DifficultyCreateWithoutDanceMoveInput {
+  createdAt: DateTimeISO
+  date: DateTimeISO!
+  rating: Int!
+  updatedAt: DateTimeISO
+}
+
+type DifficultyGroupBy {
+  _avg: DifficultyAvgAggregate
+  _count: DifficultyCountAggregate
+  _max: DifficultyMaxAggregate
+  _min: DifficultyMinAggregate
+  _sum: DifficultySumAggregate
+  createdAt: DateTimeISO!
+  danceMoveId: Int!
+  date: DateTimeISO!
+  id: Int!
+  rating: Int!
+  updatedAt: DateTimeISO!
+}
+
+input DifficultyListRelationFilter {
+  every: DifficultyWhereInput
+  none: DifficultyWhereInput
+  some: DifficultyWhereInput
+}
+
+type DifficultyMaxAggregate {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  date: DateTimeISO
+  id: Int
+  rating: Int
+  updatedAt: DateTimeISO
+}
+
+input DifficultyMaxOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  date: SortOrder
+  id: SortOrder
+  rating: SortOrder
+  updatedAt: SortOrder
+}
+
+type DifficultyMinAggregate {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  date: DateTimeISO
+  id: Int
+  rating: Int
+  updatedAt: DateTimeISO
+}
+
+input DifficultyMinOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  date: SortOrder
+  id: SortOrder
+  rating: SortOrder
+  updatedAt: SortOrder
+}
+
+input DifficultyOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input DifficultyOrderByWithAggregationInput {
+  _avg: DifficultyAvgOrderByAggregateInput
+  _count: DifficultyCountOrderByAggregateInput
+  _max: DifficultyMaxOrderByAggregateInput
+  _min: DifficultyMinOrderByAggregateInput
+  _sum: DifficultySumOrderByAggregateInput
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  date: SortOrder
+  id: SortOrder
+  rating: SortOrder
+  updatedAt: SortOrder
+}
+
+input DifficultyOrderByWithRelationInput {
+  createdAt: SortOrder
+  danceMove: DanceMoveOrderByWithRelationInput
+  danceMoveId: SortOrder
+  date: SortOrder
+  id: SortOrder
+  rating: SortOrder
+  updatedAt: SortOrder
+}
+
+enum DifficultyScalarFieldEnum {
+  createdAt
+  danceMoveId
+  date
+  id
+  rating
+  updatedAt
+}
+
+input DifficultyScalarWhereInput {
+  AND: [DifficultyScalarWhereInput!]
+  NOT: [DifficultyScalarWhereInput!]
+  OR: [DifficultyScalarWhereInput!]
+  createdAt: DateTimeFilter
+  danceMoveId: IntFilter
+  date: DateTimeFilter
+  id: IntFilter
+  rating: IntFilter
+  updatedAt: DateTimeFilter
+}
+
+input DifficultyScalarWhereWithAggregatesInput {
+  AND: [DifficultyScalarWhereWithAggregatesInput!]
+  NOT: [DifficultyScalarWhereWithAggregatesInput!]
+  OR: [DifficultyScalarWhereWithAggregatesInput!]
+  createdAt: DateTimeWithAggregatesFilter
+  danceMoveId: IntWithAggregatesFilter
+  date: DateTimeWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  rating: IntWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+type DifficultySumAggregate {
+  danceMoveId: Int
+  id: Int
+  rating: Int
+}
+
+input DifficultySumOrderByAggregateInput {
+  danceMoveId: SortOrder
+  id: SortOrder
+  rating: SortOrder
+}
+
+input DifficultyUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMove: DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput
+  date: DateTimeFieldUpdateOperationsInput
+  rating: IntFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DifficultyUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  rating: IntFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DifficultyUpdateManyWithWhereWithoutDanceMoveInput {
+  data: DifficultyUpdateManyMutationInput!
+  where: DifficultyScalarWhereInput!
+}
+
+input DifficultyUpdateManyWithoutDanceMoveNestedInput {
+  connect: [DifficultyWhereUniqueInput!]
+  connectOrCreate: [DifficultyCreateOrConnectWithoutDanceMoveInput!]
+  create: [DifficultyCreateWithoutDanceMoveInput!]
+  createMany: DifficultyCreateManyDanceMoveInputEnvelope
+  delete: [DifficultyWhereUniqueInput!]
+  deleteMany: [DifficultyScalarWhereInput!]
+  disconnect: [DifficultyWhereUniqueInput!]
+  set: [DifficultyWhereUniqueInput!]
+  update: [DifficultyUpdateWithWhereUniqueWithoutDanceMoveInput!]
+  updateMany: [DifficultyUpdateManyWithWhereWithoutDanceMoveInput!]
+  upsert: [DifficultyUpsertWithWhereUniqueWithoutDanceMoveInput!]
+}
+
+input DifficultyUpdateWithWhereUniqueWithoutDanceMoveInput {
+  data: DifficultyUpdateWithoutDanceMoveInput!
+  where: DifficultyWhereUniqueInput!
+}
+
+input DifficultyUpdateWithoutDanceMoveInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  rating: IntFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DifficultyUpsertWithWhereUniqueWithoutDanceMoveInput {
+  create: DifficultyCreateWithoutDanceMoveInput!
+  update: DifficultyUpdateWithoutDanceMoveInput!
+  where: DifficultyWhereUniqueInput!
+}
+
+input DifficultyWhereInput {
+  AND: [DifficultyWhereInput!]
+  NOT: [DifficultyWhereInput!]
+  OR: [DifficultyWhereInput!]
+  createdAt: DateTimeFilter
+  danceMove: DanceMoveRelationFilter
+  danceMoveId: IntFilter
+  date: DateTimeFilter
+  id: IntFilter
+  rating: IntFilter
+  updatedAt: DateTimeFilter
+}
+
+input DifficultyWhereUniqueInput {
+  AND: [DifficultyWhereInput!]
+  NOT: [DifficultyWhereInput!]
+  OR: [DifficultyWhereInput!]
+  createdAt: DateTimeFilter
+  danceMove: DanceMoveRelationFilter
+  danceMoveId: IntFilter
+  date: DateTimeFilter
+  id: Int
+  rating: IntFilter
+  updatedAt: DateTimeFilter
+}
+
 input EnumEraNullableFilter {
   equals: Era
   in: [Era!]
@@ -791,6 +1174,14 @@ input EnumEraNullableWithAggregatesFilter {
 enum Era {
   NEW_SCHOOL
   OLD_SCHOOL
+}
+
+input IntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
 }
 
 input IntFilter {
@@ -850,18 +1241,25 @@ input IntWithAggregatesFilter {
 type Mutation {
   createManyCreator(data: [CreatorCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyDanceMove(data: [DanceMoveCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyDifficulty(data: [DifficultyCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createOneCreator(data: CreatorCreateInput!): Creator!
   createOneDanceMove(data: DanceMoveCreateInput!): DanceMove!
+  createOneDifficulty(data: DifficultyCreateInput!): Difficulty!
   deleteManyCreator(where: CreatorWhereInput): AffectedRowsOutput!
   deleteManyDanceMove(where: DanceMoveWhereInput): AffectedRowsOutput!
+  deleteManyDifficulty(where: DifficultyWhereInput): AffectedRowsOutput!
   deleteOneCreator(where: CreatorWhereUniqueInput!): Creator
   deleteOneDanceMove(where: DanceMoveWhereUniqueInput!): DanceMove
+  deleteOneDifficulty(where: DifficultyWhereUniqueInput!): Difficulty
   updateManyCreator(data: CreatorUpdateManyMutationInput!, where: CreatorWhereInput): AffectedRowsOutput!
   updateManyDanceMove(data: DanceMoveUpdateManyMutationInput!, where: DanceMoveWhereInput): AffectedRowsOutput!
+  updateManyDifficulty(data: DifficultyUpdateManyMutationInput!, where: DifficultyWhereInput): AffectedRowsOutput!
   updateOneCreator(data: CreatorUpdateInput!, where: CreatorWhereUniqueInput!): Creator
   updateOneDanceMove(data: DanceMoveUpdateInput!, where: DanceMoveWhereUniqueInput!): DanceMove
+  updateOneDifficulty(data: DifficultyUpdateInput!, where: DifficultyWhereUniqueInput!): Difficulty
   upsertOneCreator(create: CreatorCreateInput!, update: CreatorUpdateInput!, where: CreatorWhereUniqueInput!): Creator!
   upsertOneDanceMove(create: DanceMoveCreateInput!, update: DanceMoveUpdateInput!, where: DanceMoveWhereUniqueInput!): DanceMove!
+  upsertOneDifficulty(create: DifficultyCreateInput!, update: DifficultyUpdateInput!, where: DifficultyWhereUniqueInput!): Difficulty!
 }
 
 input NestedDateTimeFilter {
@@ -1089,18 +1487,25 @@ enum NullsOrder {
 type Query {
   aggregateCreator(cursor: CreatorWhereUniqueInput, orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): AggregateCreator!
   aggregateDanceMove(cursor: DanceMoveWhereUniqueInput, orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): AggregateDanceMove!
+  aggregateDifficulty(cursor: DifficultyWhereUniqueInput, orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): AggregateDifficulty!
   creator(where: CreatorWhereUniqueInput!): Creator
   creators(cursor: CreatorWhereUniqueInput, distinct: [CreatorScalarFieldEnum!], orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): [Creator!]!
   danceMove(where: DanceMoveWhereUniqueInput!): DanceMove
   danceMoves(cursor: DanceMoveWhereUniqueInput, distinct: [DanceMoveScalarFieldEnum!], orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): [DanceMove!]!
+  difficulties(cursor: DifficultyWhereUniqueInput, distinct: [DifficultyScalarFieldEnum!], orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): [Difficulty!]!
+  difficulty(where: DifficultyWhereUniqueInput!): Difficulty
   findFirstCreator(cursor: CreatorWhereUniqueInput, distinct: [CreatorScalarFieldEnum!], orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): Creator
   findFirstCreatorOrThrow(cursor: CreatorWhereUniqueInput, distinct: [CreatorScalarFieldEnum!], orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): Creator
   findFirstDanceMove(cursor: DanceMoveWhereUniqueInput, distinct: [DanceMoveScalarFieldEnum!], orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): DanceMove
   findFirstDanceMoveOrThrow(cursor: DanceMoveWhereUniqueInput, distinct: [DanceMoveScalarFieldEnum!], orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): DanceMove
+  findFirstDifficulty(cursor: DifficultyWhereUniqueInput, distinct: [DifficultyScalarFieldEnum!], orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): Difficulty
+  findFirstDifficultyOrThrow(cursor: DifficultyWhereUniqueInput, distinct: [DifficultyScalarFieldEnum!], orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): Difficulty
   getCreator(where: CreatorWhereUniqueInput!): Creator
   getDanceMove(where: DanceMoveWhereUniqueInput!): DanceMove
+  getDifficulty(where: DifficultyWhereUniqueInput!): Difficulty
   groupByCreator(by: [CreatorScalarFieldEnum!]!, having: CreatorScalarWhereWithAggregatesInput, orderBy: [CreatorOrderByWithAggregationInput!], skip: Int, take: Int, where: CreatorWhereInput): [CreatorGroupBy!]!
   groupByDanceMove(by: [DanceMoveScalarFieldEnum!]!, having: DanceMoveScalarWhereWithAggregatesInput, orderBy: [DanceMoveOrderByWithAggregationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): [DanceMoveGroupBy!]!
+  groupByDifficulty(by: [DifficultyScalarFieldEnum!]!, having: DifficultyScalarWhereWithAggregatesInput, orderBy: [DifficultyOrderByWithAggregationInput!], skip: Int, take: Int, where: DifficultyWhereInput): [DifficultyGroupBy!]!
 }
 
 enum QueryMode {
