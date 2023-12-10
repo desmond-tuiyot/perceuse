@@ -7,6 +7,14 @@ type AffectedRowsOutput {
   count: Int!
 }
 
+type AggregateCreator {
+  _avg: CreatorAvgAggregate
+  _count: CreatorCountAggregate
+  _max: CreatorMaxAggregate
+  _min: CreatorMinAggregate
+  _sum: CreatorSumAggregate
+}
+
 type AggregateDanceMove {
   _avg: DanceMoveAvgAggregate
   _count: DanceMoveCountAggregate
@@ -15,22 +23,28 @@ type AggregateDanceMove {
   _sum: DanceMoveSumAggregate
 }
 
-type DanceMove {
+type Creator {
+  _count: CreatorCount
   createdAt: DateTimeISO!
+  danceMove(cursor: DanceMoveWhereUniqueInput, distinct: [DanceMoveScalarFieldEnum!], orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): [DanceMove!]!
   id: Int!
   name: String!
   updatedAt: DateTimeISO!
 }
 
-type DanceMoveAvgAggregate {
+type CreatorAvgAggregate {
   id: Float
 }
 
-input DanceMoveAvgOrderByAggregateInput {
+input CreatorAvgOrderByAggregateInput {
   id: SortOrder
 }
 
-type DanceMoveCountAggregate {
+type CreatorCount {
+  danceMove(where: DanceMoveWhereInput): Int!
+}
+
+type CreatorCountAggregate {
   _all: Int!
   createdAt: Int!
   id: Int!
@@ -38,8 +52,227 @@ type DanceMoveCountAggregate {
   updatedAt: Int!
 }
 
+input CreatorCountOrderByAggregateInput {
+  createdAt: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+input CreatorCreateInput {
+  createdAt: DateTimeISO
+  danceMove: DanceMoveCreateNestedManyWithoutCreatorInput
+  name: String!
+  updatedAt: DateTimeISO
+}
+
+input CreatorCreateManyInput {
+  createdAt: DateTimeISO
+  id: Int
+  name: String!
+  updatedAt: DateTimeISO
+}
+
+input CreatorCreateNestedOneWithoutDanceMoveInput {
+  connect: CreatorWhereUniqueInput
+  connectOrCreate: CreatorCreateOrConnectWithoutDanceMoveInput
+  create: CreatorCreateWithoutDanceMoveInput
+}
+
+input CreatorCreateOrConnectWithoutDanceMoveInput {
+  create: CreatorCreateWithoutDanceMoveInput!
+  where: CreatorWhereUniqueInput!
+}
+
+input CreatorCreateWithoutDanceMoveInput {
+  createdAt: DateTimeISO
+  name: String!
+  updatedAt: DateTimeISO
+}
+
+type CreatorGroupBy {
+  _avg: CreatorAvgAggregate
+  _count: CreatorCountAggregate
+  _max: CreatorMaxAggregate
+  _min: CreatorMinAggregate
+  _sum: CreatorSumAggregate
+  createdAt: DateTimeISO!
+  id: Int!
+  name: String!
+  updatedAt: DateTimeISO!
+}
+
+type CreatorMaxAggregate {
+  createdAt: DateTimeISO
+  id: Int
+  name: String
+  updatedAt: DateTimeISO
+}
+
+input CreatorMaxOrderByAggregateInput {
+  createdAt: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+type CreatorMinAggregate {
+  createdAt: DateTimeISO
+  id: Int
+  name: String
+  updatedAt: DateTimeISO
+}
+
+input CreatorMinOrderByAggregateInput {
+  createdAt: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+input CreatorNullableRelationFilter {
+  is: CreatorWhereInput
+  isNot: CreatorWhereInput
+}
+
+input CreatorOrderByWithAggregationInput {
+  _avg: CreatorAvgOrderByAggregateInput
+  _count: CreatorCountOrderByAggregateInput
+  _max: CreatorMaxOrderByAggregateInput
+  _min: CreatorMinOrderByAggregateInput
+  _sum: CreatorSumOrderByAggregateInput
+  createdAt: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+input CreatorOrderByWithRelationInput {
+  createdAt: SortOrder
+  danceMove: DanceMoveOrderByRelationAggregateInput
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+enum CreatorScalarFieldEnum {
+  createdAt
+  id
+  name
+  updatedAt
+}
+
+input CreatorScalarWhereWithAggregatesInput {
+  AND: [CreatorScalarWhereWithAggregatesInput!]
+  NOT: [CreatorScalarWhereWithAggregatesInput!]
+  OR: [CreatorScalarWhereWithAggregatesInput!]
+  createdAt: DateTimeWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  name: StringWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+type CreatorSumAggregate {
+  id: Int
+}
+
+input CreatorSumOrderByAggregateInput {
+  id: SortOrder
+}
+
+input CreatorUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMove: DanceMoveUpdateManyWithoutCreatorNestedInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input CreatorUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input CreatorUpdateOneWithoutDanceMoveNestedInput {
+  connect: CreatorWhereUniqueInput
+  connectOrCreate: CreatorCreateOrConnectWithoutDanceMoveInput
+  create: CreatorCreateWithoutDanceMoveInput
+  delete: CreatorWhereInput
+  disconnect: CreatorWhereInput
+  update: CreatorUpdateToOneWithWhereWithoutDanceMoveInput
+  upsert: CreatorUpsertWithoutDanceMoveInput
+}
+
+input CreatorUpdateToOneWithWhereWithoutDanceMoveInput {
+  data: CreatorUpdateWithoutDanceMoveInput!
+  where: CreatorWhereInput
+}
+
+input CreatorUpdateWithoutDanceMoveInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input CreatorUpsertWithoutDanceMoveInput {
+  create: CreatorCreateWithoutDanceMoveInput!
+  update: CreatorUpdateWithoutDanceMoveInput!
+  where: CreatorWhereInput
+}
+
+input CreatorWhereInput {
+  AND: [CreatorWhereInput!]
+  NOT: [CreatorWhereInput!]
+  OR: [CreatorWhereInput!]
+  createdAt: DateTimeFilter
+  danceMove: DanceMoveListRelationFilter
+  id: IntFilter
+  name: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input CreatorWhereUniqueInput {
+  AND: [CreatorWhereInput!]
+  NOT: [CreatorWhereInput!]
+  OR: [CreatorWhereInput!]
+  createdAt: DateTimeFilter
+  danceMove: DanceMoveListRelationFilter
+  id: Int
+  name: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+type DanceMove {
+  createdAt: DateTimeISO!
+  creator(where: CreatorWhereInput): Creator
+  creatorId: Int
+  id: Int!
+  name: String!
+  updatedAt: DateTimeISO!
+}
+
+type DanceMoveAvgAggregate {
+  creatorId: Float
+  id: Float
+}
+
+input DanceMoveAvgOrderByAggregateInput {
+  creatorId: SortOrder
+  id: SortOrder
+}
+
+type DanceMoveCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  creatorId: Int!
+  id: Int!
+  name: Int!
+  updatedAt: Int!
+}
+
 input DanceMoveCountOrderByAggregateInput {
   createdAt: SortOrder
+  creatorId: SortOrder
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
@@ -47,13 +280,45 @@ input DanceMoveCountOrderByAggregateInput {
 
 input DanceMoveCreateInput {
   createdAt: DateTimeISO
+  creator: CreatorCreateNestedOneWithoutDanceMoveInput
   name: String!
   updatedAt: DateTimeISO
 }
 
-input DanceMoveCreateManyInput {
+input DanceMoveCreateManyCreatorInput {
   createdAt: DateTimeISO
   id: Int
+  name: String!
+  updatedAt: DateTimeISO
+}
+
+input DanceMoveCreateManyCreatorInputEnvelope {
+  data: [DanceMoveCreateManyCreatorInput!]!
+  skipDuplicates: Boolean
+}
+
+input DanceMoveCreateManyInput {
+  createdAt: DateTimeISO
+  creatorId: Int
+  id: Int
+  name: String!
+  updatedAt: DateTimeISO
+}
+
+input DanceMoveCreateNestedManyWithoutCreatorInput {
+  connect: [DanceMoveWhereUniqueInput!]
+  connectOrCreate: [DanceMoveCreateOrConnectWithoutCreatorInput!]
+  create: [DanceMoveCreateWithoutCreatorInput!]
+  createMany: DanceMoveCreateManyCreatorInputEnvelope
+}
+
+input DanceMoveCreateOrConnectWithoutCreatorInput {
+  create: DanceMoveCreateWithoutCreatorInput!
+  where: DanceMoveWhereUniqueInput!
+}
+
+input DanceMoveCreateWithoutCreatorInput {
+  createdAt: DateTimeISO
   name: String!
   updatedAt: DateTimeISO
 }
@@ -65,13 +330,21 @@ type DanceMoveGroupBy {
   _min: DanceMoveMinAggregate
   _sum: DanceMoveSumAggregate
   createdAt: DateTimeISO!
+  creatorId: Int
   id: Int!
   name: String!
   updatedAt: DateTimeISO!
 }
 
+input DanceMoveListRelationFilter {
+  every: DanceMoveWhereInput
+  none: DanceMoveWhereInput
+  some: DanceMoveWhereInput
+}
+
 type DanceMoveMaxAggregate {
   createdAt: DateTimeISO
+  creatorId: Int
   id: Int
   name: String
   updatedAt: DateTimeISO
@@ -79,6 +352,7 @@ type DanceMoveMaxAggregate {
 
 input DanceMoveMaxOrderByAggregateInput {
   createdAt: SortOrder
+  creatorId: SortOrder
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
@@ -86,6 +360,7 @@ input DanceMoveMaxOrderByAggregateInput {
 
 type DanceMoveMinAggregate {
   createdAt: DateTimeISO
+  creatorId: Int
   id: Int
   name: String
   updatedAt: DateTimeISO
@@ -93,9 +368,14 @@ type DanceMoveMinAggregate {
 
 input DanceMoveMinOrderByAggregateInput {
   createdAt: SortOrder
+  creatorId: SortOrder
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
+}
+
+input DanceMoveOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input DanceMoveOrderByWithAggregationInput {
@@ -105,6 +385,7 @@ input DanceMoveOrderByWithAggregationInput {
   _min: DanceMoveMinOrderByAggregateInput
   _sum: DanceMoveSumOrderByAggregateInput
   createdAt: SortOrder
+  creatorId: SortOrderInput
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
@@ -112,6 +393,8 @@ input DanceMoveOrderByWithAggregationInput {
 
 input DanceMoveOrderByWithRelationInput {
   createdAt: SortOrder
+  creator: CreatorOrderByWithRelationInput
+  creatorId: SortOrderInput
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
@@ -119,9 +402,21 @@ input DanceMoveOrderByWithRelationInput {
 
 enum DanceMoveScalarFieldEnum {
   createdAt
+  creatorId
   id
   name
   updatedAt
+}
+
+input DanceMoveScalarWhereInput {
+  AND: [DanceMoveScalarWhereInput!]
+  NOT: [DanceMoveScalarWhereInput!]
+  OR: [DanceMoveScalarWhereInput!]
+  createdAt: DateTimeFilter
+  creatorId: IntNullableFilter
+  id: IntFilter
+  name: StringFilter
+  updatedAt: DateTimeFilter
 }
 
 input DanceMoveScalarWhereWithAggregatesInput {
@@ -129,21 +424,25 @@ input DanceMoveScalarWhereWithAggregatesInput {
   NOT: [DanceMoveScalarWhereWithAggregatesInput!]
   OR: [DanceMoveScalarWhereWithAggregatesInput!]
   createdAt: DateTimeWithAggregatesFilter
+  creatorId: IntNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   name: StringWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
 }
 
 type DanceMoveSumAggregate {
+  creatorId: Int
   id: Int
 }
 
 input DanceMoveSumOrderByAggregateInput {
+  creatorId: SortOrder
   id: SortOrder
 }
 
 input DanceMoveUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
+  creator: CreatorUpdateOneWithoutDanceMoveNestedInput
   name: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -154,11 +453,49 @@ input DanceMoveUpdateManyMutationInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
+input DanceMoveUpdateManyWithWhereWithoutCreatorInput {
+  data: DanceMoveUpdateManyMutationInput!
+  where: DanceMoveScalarWhereInput!
+}
+
+input DanceMoveUpdateManyWithoutCreatorNestedInput {
+  connect: [DanceMoveWhereUniqueInput!]
+  connectOrCreate: [DanceMoveCreateOrConnectWithoutCreatorInput!]
+  create: [DanceMoveCreateWithoutCreatorInput!]
+  createMany: DanceMoveCreateManyCreatorInputEnvelope
+  delete: [DanceMoveWhereUniqueInput!]
+  deleteMany: [DanceMoveScalarWhereInput!]
+  disconnect: [DanceMoveWhereUniqueInput!]
+  set: [DanceMoveWhereUniqueInput!]
+  update: [DanceMoveUpdateWithWhereUniqueWithoutCreatorInput!]
+  updateMany: [DanceMoveUpdateManyWithWhereWithoutCreatorInput!]
+  upsert: [DanceMoveUpsertWithWhereUniqueWithoutCreatorInput!]
+}
+
+input DanceMoveUpdateWithWhereUniqueWithoutCreatorInput {
+  data: DanceMoveUpdateWithoutCreatorInput!
+  where: DanceMoveWhereUniqueInput!
+}
+
+input DanceMoveUpdateWithoutCreatorInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DanceMoveUpsertWithWhereUniqueWithoutCreatorInput {
+  create: DanceMoveCreateWithoutCreatorInput!
+  update: DanceMoveUpdateWithoutCreatorInput!
+  where: DanceMoveWhereUniqueInput!
+}
+
 input DanceMoveWhereInput {
   AND: [DanceMoveWhereInput!]
   NOT: [DanceMoveWhereInput!]
   OR: [DanceMoveWhereInput!]
   createdAt: DateTimeFilter
+  creator: CreatorNullableRelationFilter
+  creatorId: IntNullableFilter
   id: IntFilter
   name: StringFilter
   updatedAt: DateTimeFilter
@@ -169,6 +506,8 @@ input DanceMoveWhereUniqueInput {
   NOT: [DanceMoveWhereInput!]
   OR: [DanceMoveWhereInput!]
   createdAt: DateTimeFilter
+  creator: CreatorNullableRelationFilter
+  creatorId: IntNullableFilter
   id: Int
   name: StringFilter
   updatedAt: DateTimeFilter
@@ -219,6 +558,33 @@ input IntFilter {
   notIn: [Int!]
 }
 
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
+input IntNullableWithAggregatesFilter {
+  _avg: NestedFloatNullableFilter
+  _count: NestedIntNullableFilter
+  _max: NestedIntNullableFilter
+  _min: NestedIntNullableFilter
+  _sum: NestedIntNullableFilter
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableWithAggregatesFilter
+  notIn: [Int!]
+}
+
 input IntWithAggregatesFilter {
   _avg: NestedFloatFilter
   _count: NestedIntFilter
@@ -236,12 +602,19 @@ input IntWithAggregatesFilter {
 }
 
 type Mutation {
+  createManyCreator(data: [CreatorCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyDanceMove(data: [DanceMoveCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createOneCreator(data: CreatorCreateInput!): Creator!
   createOneDanceMove(data: DanceMoveCreateInput!): DanceMove!
+  deleteManyCreator(where: CreatorWhereInput): AffectedRowsOutput!
   deleteManyDanceMove(where: DanceMoveWhereInput): AffectedRowsOutput!
+  deleteOneCreator(where: CreatorWhereUniqueInput!): Creator
   deleteOneDanceMove(where: DanceMoveWhereUniqueInput!): DanceMove
+  updateManyCreator(data: CreatorUpdateManyMutationInput!, where: CreatorWhereInput): AffectedRowsOutput!
   updateManyDanceMove(data: DanceMoveUpdateManyMutationInput!, where: DanceMoveWhereInput): AffectedRowsOutput!
+  updateOneCreator(data: CreatorUpdateInput!, where: CreatorWhereUniqueInput!): Creator
   updateOneDanceMove(data: DanceMoveUpdateInput!, where: DanceMoveWhereUniqueInput!): DanceMove
+  upsertOneCreator(create: CreatorCreateInput!, update: CreatorUpdateInput!, where: CreatorWhereUniqueInput!): Creator!
   upsertOneDanceMove(create: DanceMoveCreateInput!, update: DanceMoveUpdateInput!, where: DanceMoveWhereUniqueInput!): DanceMove!
 }
 
@@ -281,6 +654,17 @@ input NestedFloatFilter {
   notIn: [Float!]
 }
 
+input NestedFloatNullableFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: NestedFloatNullableFilter
+  notIn: [Float!]
+}
+
 input NestedIntFilter {
   equals: Int
   gt: Int
@@ -289,6 +673,33 @@ input NestedIntFilter {
   lt: Int
   lte: Int
   not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input NestedIntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
+input NestedIntNullableWithAggregatesFilter {
+  _avg: NestedFloatNullableFilter
+  _count: NestedIntNullableFilter
+  _max: NestedIntNullableFilter
+  _min: NestedIntNullableFilter
+  _sum: NestedIntNullableFilter
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableWithAggregatesFilter
   notIn: [Int!]
 }
 
@@ -339,13 +750,25 @@ input NestedStringWithAggregatesFilter {
   startsWith: String
 }
 
+enum NullsOrder {
+  first
+  last
+}
+
 type Query {
+  aggregateCreator(cursor: CreatorWhereUniqueInput, orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): AggregateCreator!
   aggregateDanceMove(cursor: DanceMoveWhereUniqueInput, orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): AggregateDanceMove!
+  creator(where: CreatorWhereUniqueInput!): Creator
+  creators(cursor: CreatorWhereUniqueInput, distinct: [CreatorScalarFieldEnum!], orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): [Creator!]!
   danceMove(where: DanceMoveWhereUniqueInput!): DanceMove
   danceMoves(cursor: DanceMoveWhereUniqueInput, distinct: [DanceMoveScalarFieldEnum!], orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): [DanceMove!]!
+  findFirstCreator(cursor: CreatorWhereUniqueInput, distinct: [CreatorScalarFieldEnum!], orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): Creator
+  findFirstCreatorOrThrow(cursor: CreatorWhereUniqueInput, distinct: [CreatorScalarFieldEnum!], orderBy: [CreatorOrderByWithRelationInput!], skip: Int, take: Int, where: CreatorWhereInput): Creator
   findFirstDanceMove(cursor: DanceMoveWhereUniqueInput, distinct: [DanceMoveScalarFieldEnum!], orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): DanceMove
   findFirstDanceMoveOrThrow(cursor: DanceMoveWhereUniqueInput, distinct: [DanceMoveScalarFieldEnum!], orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): DanceMove
+  getCreator(where: CreatorWhereUniqueInput!): Creator
   getDanceMove(where: DanceMoveWhereUniqueInput!): DanceMove
+  groupByCreator(by: [CreatorScalarFieldEnum!]!, having: CreatorScalarWhereWithAggregatesInput, orderBy: [CreatorOrderByWithAggregationInput!], skip: Int, take: Int, where: CreatorWhereInput): [CreatorGroupBy!]!
   groupByDanceMove(by: [DanceMoveScalarFieldEnum!]!, having: DanceMoveScalarWhereWithAggregatesInput, orderBy: [DanceMoveOrderByWithAggregationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): [DanceMoveGroupBy!]!
 }
 
@@ -357,6 +780,11 @@ enum QueryMode {
 enum SortOrder {
   asc
   desc
+}
+
+input SortOrderInput {
+  nulls: NullsOrder
+  sort: SortOrder!
 }
 
 input StringFieldUpdateOperationsInput {

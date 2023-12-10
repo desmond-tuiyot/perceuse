@@ -20,4 +20,18 @@ model DanceMove {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Relation to Creator
+  creator   Creator? @relation(fields: [creatorId], references: [id])
+  creatorId Int?
+}
+
+model Creator {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation to DanceMove
+  danceMove DanceMove[]
 }
