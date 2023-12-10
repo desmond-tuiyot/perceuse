@@ -26,13 +26,13 @@ model DanceMove {
   updatedAt DateTime @updatedAt
 
   // Information about the dance move
-  name            String
-  aliases         String[]
-  tutorials       String[] // currently just links. Might be better to create a Tutorial model
-  countryOfOrigin String?
-  dateCreated     DateTime?
-  era             Era?
-  officialSong    String?
+  name         String
+  aliases      String[]
+  tutorials    String[] // currently just links. Might be better to create a Tutorial model
+  origin       String? // update to country enum
+  dateCreated  DateTime?
+  era          Era?
+  officialSong String?
 
   // Info about learning the dance move
   dateLearned       DateTime?
@@ -44,7 +44,7 @@ model DanceMove {
   creatorId Int?
 
   // Relation to DanceStyle
-  DanceStyle   DanceStyle? @relation(fields: [danceStyleId], references: [id])
+  danceStyle   DanceStyle? @relation(fields: [danceStyleId], references: [id])
   danceStyleId Int?
 }
 
@@ -55,7 +55,8 @@ model Creator {
   updatedAt DateTime @updatedAt
 
   // Relation to DanceMove
-  danceMove DanceMove[]
+  danceMove  DanceMove[]
+  danceStyle DanceStyle[]
 }
 
 model Difficulty {
@@ -78,11 +79,13 @@ model DanceStyle {
   updatedAt DateTime @updatedAt
 
   // Information about the dance style
-  name         String
-  description  String?
-  aliases      String[]
-  origin       String?
-  officialSong String?
+  name        String
+  description String?
+  aliases     String[]
+  origin      String? // update to country enum
+  dateCreated DateTime?
+  creator     Creator?  @relation(fields: [creatorId], references: [id])
+  creatorId   Int?
 
   // Relation to DanceMove
   danceMove DanceMove[]
