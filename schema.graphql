@@ -932,20 +932,22 @@ input DanceMoveUpdateManyWithoutDanceStyleNestedInput {
   upsert: [DanceMoveUpsertWithWhereUniqueWithoutDanceStyleInput!]
 }
 
-input DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput {
-  connect: DanceMoveWhereUniqueInput
-  connectOrCreate: DanceMoveCreateOrConnectWithoutDifficultyHistoryInput
-  create: DanceMoveCreateWithoutDifficultyHistoryInput
-  update: DanceMoveUpdateToOneWithWhereWithoutDifficultyHistoryInput
-  upsert: DanceMoveUpsertWithoutDifficultyHistoryInput
-}
-
 input DanceMoveUpdateOneRequiredWithoutTransitionsNestedInput {
   connect: DanceMoveWhereUniqueInput
   connectOrCreate: DanceMoveCreateOrConnectWithoutTransitionsInput
   create: DanceMoveCreateWithoutTransitionsInput
   update: DanceMoveUpdateToOneWithWhereWithoutTransitionsInput
   upsert: DanceMoveUpsertWithoutTransitionsInput
+}
+
+input DanceMoveUpdateOneWithoutDifficultyHistoryNestedInput {
+  connect: DanceMoveWhereUniqueInput
+  connectOrCreate: DanceMoveCreateOrConnectWithoutDifficultyHistoryInput
+  create: DanceMoveCreateWithoutDifficultyHistoryInput
+  delete: DanceMoveWhereInput
+  disconnect: DanceMoveWhereInput
+  update: DanceMoveUpdateToOneWithWhereWithoutDifficultyHistoryInput
+  upsert: DanceMoveUpsertWithoutDifficultyHistoryInput
 }
 
 input DanceMoveUpdateOneWithoutNotesNestedInput {
@@ -1741,8 +1743,8 @@ input DateTimeWithAggregatesFilter {
 type Difficulty {
   _count: DifficultyCount
   createdAt: DateTimeISO!
-  danceMove: DanceMove!
-  danceMoveId: Int!
+  danceMove(where: DanceMoveWhereInput): DanceMove
+  danceMoveId: Int
   date: DateTimeISO!
   id: Int!
   notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
@@ -1793,7 +1795,7 @@ input DifficultyCountOrderByAggregateInput {
 
 input DifficultyCreateInput {
   createdAt: DateTimeISO
-  danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput!
+  danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput
   date: DateTimeISO!
   notes: NoteCreateNestedManyWithoutDifficultyInput
   rating: Int!
@@ -1817,7 +1819,7 @@ input DifficultyCreateManyDanceMoveInputEnvelope {
 
 input DifficultyCreateManyInput {
   createdAt: DateTimeISO
-  danceMoveId: Int!
+  danceMoveId: Int
   date: DateTimeISO!
   id: Int
   rating: Int!
@@ -1827,7 +1829,7 @@ input DifficultyCreateManyInput {
 
 input DifficultyCreateManyTransitionInput {
   createdAt: DateTimeISO
-  danceMoveId: Int!
+  danceMoveId: Int
   date: DateTimeISO!
   id: Int
   rating: Int!
@@ -1885,7 +1887,7 @@ input DifficultyCreateWithoutDanceMoveInput {
 
 input DifficultyCreateWithoutNotesInput {
   createdAt: DateTimeISO
-  danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput!
+  danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput
   date: DateTimeISO!
   rating: Int!
   transition: TransitionCreateNestedOneWithoutDifficultyHistoryInput
@@ -1894,7 +1896,7 @@ input DifficultyCreateWithoutNotesInput {
 
 input DifficultyCreateWithoutTransitionInput {
   createdAt: DateTimeISO
-  danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput!
+  danceMove: DanceMoveCreateNestedOneWithoutDifficultyHistoryInput
   date: DateTimeISO!
   notes: NoteCreateNestedManyWithoutDifficultyInput
   rating: Int!
@@ -1908,7 +1910,7 @@ type DifficultyGroupBy {
   _min: DifficultyMinAggregate
   _sum: DifficultySumAggregate
   createdAt: DateTimeISO!
-  danceMoveId: Int!
+  danceMoveId: Int
   date: DateTimeISO!
   id: Int!
   rating: Int!
@@ -1978,7 +1980,7 @@ input DifficultyOrderByWithAggregationInput {
   _min: DifficultyMinOrderByAggregateInput
   _sum: DifficultySumOrderByAggregateInput
   createdAt: SortOrder
-  danceMoveId: SortOrder
+  danceMoveId: SortOrderInput
   date: SortOrder
   id: SortOrder
   rating: SortOrder
@@ -1989,7 +1991,7 @@ input DifficultyOrderByWithAggregationInput {
 input DifficultyOrderByWithRelationInput {
   createdAt: SortOrder
   danceMove: DanceMoveOrderByWithRelationInput
-  danceMoveId: SortOrder
+  danceMoveId: SortOrderInput
   date: SortOrder
   id: SortOrder
   notes: NoteOrderByRelationAggregateInput
@@ -2014,7 +2016,7 @@ input DifficultyScalarWhereInput {
   NOT: [DifficultyScalarWhereInput!]
   OR: [DifficultyScalarWhereInput!]
   createdAt: DateTimeFilter
-  danceMoveId: IntFilter
+  danceMoveId: IntNullableFilter
   date: DateTimeFilter
   id: IntFilter
   rating: IntFilter
@@ -2027,7 +2029,7 @@ input DifficultyScalarWhereWithAggregatesInput {
   NOT: [DifficultyScalarWhereWithAggregatesInput!]
   OR: [DifficultyScalarWhereWithAggregatesInput!]
   createdAt: DateTimeWithAggregatesFilter
-  danceMoveId: IntWithAggregatesFilter
+  danceMoveId: IntNullableWithAggregatesFilter
   date: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   rating: IntWithAggregatesFilter
@@ -2051,7 +2053,7 @@ input DifficultySumOrderByAggregateInput {
 
 input DifficultyUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
-  danceMove: DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput
+  danceMove: DanceMoveUpdateOneWithoutDifficultyHistoryNestedInput
   date: DateTimeFieldUpdateOperationsInput
   notes: NoteUpdateManyWithoutDifficultyNestedInput
   rating: IntFieldUpdateOperationsInput
@@ -2140,7 +2142,7 @@ input DifficultyUpdateWithoutDanceMoveInput {
 
 input DifficultyUpdateWithoutNotesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
-  danceMove: DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput
+  danceMove: DanceMoveUpdateOneWithoutDifficultyHistoryNestedInput
   date: DateTimeFieldUpdateOperationsInput
   rating: IntFieldUpdateOperationsInput
   transition: TransitionUpdateOneWithoutDifficultyHistoryNestedInput
@@ -2149,7 +2151,7 @@ input DifficultyUpdateWithoutNotesInput {
 
 input DifficultyUpdateWithoutTransitionInput {
   createdAt: DateTimeFieldUpdateOperationsInput
-  danceMove: DanceMoveUpdateOneRequiredWithoutDifficultyHistoryNestedInput
+  danceMove: DanceMoveUpdateOneWithoutDifficultyHistoryNestedInput
   date: DateTimeFieldUpdateOperationsInput
   notes: NoteUpdateManyWithoutDifficultyNestedInput
   rating: IntFieldUpdateOperationsInput
@@ -2179,8 +2181,8 @@ input DifficultyWhereInput {
   NOT: [DifficultyWhereInput!]
   OR: [DifficultyWhereInput!]
   createdAt: DateTimeFilter
-  danceMove: DanceMoveRelationFilter
-  danceMoveId: IntFilter
+  danceMove: DanceMoveNullableRelationFilter
+  danceMoveId: IntNullableFilter
   date: DateTimeFilter
   id: IntFilter
   notes: NoteListRelationFilter
@@ -2195,8 +2197,8 @@ input DifficultyWhereUniqueInput {
   NOT: [DifficultyWhereInput!]
   OR: [DifficultyWhereInput!]
   createdAt: DateTimeFilter
-  danceMove: DanceMoveRelationFilter
-  danceMoveId: IntFilter
+  danceMove: DanceMoveNullableRelationFilter
+  danceMoveId: IntNullableFilter
   date: DateTimeFilter
   id: Int
   notes: NoteListRelationFilter

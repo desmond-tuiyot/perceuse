@@ -77,8 +77,8 @@ model Difficulty {
   rating Int
 
   // Relation to DanceMove
-  danceMove   DanceMove @relation(fields: [danceMoveId], references: [id])
-  danceMoveId Int
+  danceMove   DanceMove? @relation(fields: [danceMoveId], references: [id])
+  danceMoveId Int?
 
   // Relation to Notes
   notes Note[]
