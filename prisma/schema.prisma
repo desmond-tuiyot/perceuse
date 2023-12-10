@@ -42,6 +42,10 @@ model DanceMove {
   // Relation to Creator
   creator   Creator? @relation(fields: [creatorId], references: [id])
   creatorId Int?
+
+  // Relation to DanceStyle
+  DanceStyle   DanceStyle? @relation(fields: [danceStyleId], references: [id])
+  danceStyleId Int?
 }
 
 model Creator {
@@ -66,4 +70,20 @@ model Difficulty {
   // Relation to DanceMove
   danceMove   DanceMove @relation(fields: [danceMoveId], references: [id])
   danceMoveId Int
+}
+
+model DanceStyle {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the dance style
+  name         String
+  description  String?
+  aliases      String[]
+  origin       String?
+  officialSong String?
+
+  // Relation to DanceMove
+  danceMove DanceMove[]
 }
