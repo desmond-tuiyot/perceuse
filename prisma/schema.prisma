@@ -52,6 +52,9 @@ model DanceMove {
 
   // Relation to Transition
   transitions TransitionsAndMoves[]
+
+  // Relation to LearningProgress
+  LearningProgress LearningProgress[]
 }
 
 model Creator {
@@ -153,6 +156,9 @@ model Transition {
 
   // Relation to Notes
   notes Note[]
+
+  // Relation to LearningProgress
+  LearningProgress LearningProgress[]
 }
 
 model TransitionsAndMoves {
@@ -166,4 +172,30 @@ model TransitionsAndMoves {
   transitionId Int
 
   @@id([danceMoveId, transitionId])
+}
+
+model LearningProgress {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the learning progress
+  date  DateTime
+  stage LearningStage
+
+  // Relation to DanceMove
+  danceMove   DanceMove? @relation(fields: [danceMoveId], references: [id])
+  danceMoveId Int?
+
+  // Relation to Transition
+  transition   Transition? @relation(fields: [transitionId], references: [id])
+  transitionId Int?
+}
+
+enum LearningStage {
+  NOT_STARTED
+  LEARNING // initial learning & exploration
+  REVIEWING // reviewing & practicing
+  PROFICIENT
+  MASTERED
 }

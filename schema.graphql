@@ -39,6 +39,14 @@ type AggregateDifficulty {
   _sum: DifficultySumAggregate
 }
 
+type AggregateLearningProgress {
+  _avg: LearningProgressAvgAggregate
+  _count: LearningProgressCountAggregate
+  _max: LearningProgressMaxAggregate
+  _min: LearningProgressMinAggregate
+  _sum: LearningProgressSumAggregate
+}
+
 type AggregateNote {
   _avg: NoteAvgAggregate
   _count: NoteCountAggregate
@@ -338,6 +346,7 @@ input CreatorWhereUniqueInput {
 }
 
 type DanceMove {
+  LearningProgress(cursor: LearningProgressWhereUniqueInput, distinct: [LearningProgressScalarFieldEnum!], orderBy: [LearningProgressOrderByWithRelationInput!], skip: Int, take: Int, where: LearningProgressWhereInput): [LearningProgress!]!
   _count: DanceMoveCount
   aliases: [String!]!
   createdAt: DateTimeISO!
@@ -373,6 +382,7 @@ input DanceMoveAvgOrderByAggregateInput {
 }
 
 type DanceMoveCount {
+  LearningProgress(where: LearningProgressWhereInput): Int!
   difficultyHistory(where: DifficultyWhereInput): Int!
   notes(where: NoteWhereInput): Int!
   transitions(where: TransitionsAndMovesWhereInput): Int!
@@ -414,6 +424,7 @@ input DanceMoveCountOrderByAggregateInput {
 }
 
 input DanceMoveCreateInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutDanceMoveInput
   aliases: DanceMoveCreatealiasesInput
   createdAt: DateTimeISO
   creator: CreatorCreateNestedOneWithoutDanceMovesInput
@@ -511,6 +522,12 @@ input DanceMoveCreateNestedOneWithoutDifficultyHistoryInput {
   create: DanceMoveCreateWithoutDifficultyHistoryInput
 }
 
+input DanceMoveCreateNestedOneWithoutLearningProgressInput {
+  connect: DanceMoveWhereUniqueInput
+  connectOrCreate: DanceMoveCreateOrConnectWithoutLearningProgressInput
+  create: DanceMoveCreateWithoutLearningProgressInput
+}
+
 input DanceMoveCreateNestedOneWithoutNotesInput {
   connect: DanceMoveWhereUniqueInput
   connectOrCreate: DanceMoveCreateOrConnectWithoutNotesInput
@@ -538,6 +555,11 @@ input DanceMoveCreateOrConnectWithoutDifficultyHistoryInput {
   where: DanceMoveWhereUniqueInput!
 }
 
+input DanceMoveCreateOrConnectWithoutLearningProgressInput {
+  create: DanceMoveCreateWithoutLearningProgressInput!
+  where: DanceMoveWhereUniqueInput!
+}
+
 input DanceMoveCreateOrConnectWithoutNotesInput {
   create: DanceMoveCreateWithoutNotesInput!
   where: DanceMoveWhereUniqueInput!
@@ -549,6 +571,7 @@ input DanceMoveCreateOrConnectWithoutTransitionsInput {
 }
 
 input DanceMoveCreateWithoutCreatorInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutDanceMoveInput
   aliases: DanceMoveCreatealiasesInput
   createdAt: DateTimeISO
   danceStyle: DanceStyleCreateNestedOneWithoutDanceMovesInput
@@ -567,6 +590,7 @@ input DanceMoveCreateWithoutCreatorInput {
 }
 
 input DanceMoveCreateWithoutDanceStyleInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutDanceMoveInput
   aliases: DanceMoveCreatealiasesInput
   createdAt: DateTimeISO
   creator: CreatorCreateNestedOneWithoutDanceMovesInput
@@ -585,6 +609,7 @@ input DanceMoveCreateWithoutDanceStyleInput {
 }
 
 input DanceMoveCreateWithoutDifficultyHistoryInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutDanceMoveInput
   aliases: DanceMoveCreatealiasesInput
   createdAt: DateTimeISO
   creator: CreatorCreateNestedOneWithoutDanceMovesInput
@@ -602,7 +627,27 @@ input DanceMoveCreateWithoutDifficultyHistoryInput {
   updatedAt: DateTimeISO
 }
 
+input DanceMoveCreateWithoutLearningProgressInput {
+  aliases: DanceMoveCreatealiasesInput
+  createdAt: DateTimeISO
+  creator: CreatorCreateNestedOneWithoutDanceMovesInput
+  danceStyle: DanceStyleCreateNestedOneWithoutDanceMovesInput
+  dateCreated: DateTimeISO
+  dateLearned: DateTimeISO
+  datesReviewed: DanceMoveCreatedatesReviewedInput
+  difficultyHistory: DifficultyCreateNestedManyWithoutDanceMoveInput
+  era: Era
+  name: String!
+  notes: NoteCreateNestedManyWithoutDanceMoveInput
+  officialSong: String
+  origin: String
+  transitions: TransitionsAndMovesCreateNestedManyWithoutDanceMoveInput
+  tutorials: DanceMoveCreatetutorialsInput
+  updatedAt: DateTimeISO
+}
+
 input DanceMoveCreateWithoutNotesInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutDanceMoveInput
   aliases: DanceMoveCreatealiasesInput
   createdAt: DateTimeISO
   creator: CreatorCreateNestedOneWithoutDanceMovesInput
@@ -621,6 +666,7 @@ input DanceMoveCreateWithoutNotesInput {
 }
 
 input DanceMoveCreateWithoutTransitionsInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutDanceMoveInput
   aliases: DanceMoveCreatealiasesInput
   createdAt: DateTimeISO
   creator: CreatorCreateNestedOneWithoutDanceMovesInput
@@ -766,6 +812,7 @@ input DanceMoveOrderByWithAggregationInput {
 }
 
 input DanceMoveOrderByWithRelationInput {
+  LearningProgress: LearningProgressOrderByRelationAggregateInput
   aliases: SortOrder
   createdAt: SortOrder
   creator: CreatorOrderByWithRelationInput
@@ -862,6 +909,7 @@ input DanceMoveSumOrderByAggregateInput {
 }
 
 input DanceMoveUpdateInput {
+  LearningProgress: LearningProgressUpdateManyWithoutDanceMoveNestedInput
   aliases: DanceMoveUpdatealiasesInput
   createdAt: DateTimeFieldUpdateOperationsInput
   creator: CreatorUpdateOneWithoutDanceMovesNestedInput
@@ -950,6 +998,16 @@ input DanceMoveUpdateOneWithoutDifficultyHistoryNestedInput {
   upsert: DanceMoveUpsertWithoutDifficultyHistoryInput
 }
 
+input DanceMoveUpdateOneWithoutLearningProgressNestedInput {
+  connect: DanceMoveWhereUniqueInput
+  connectOrCreate: DanceMoveCreateOrConnectWithoutLearningProgressInput
+  create: DanceMoveCreateWithoutLearningProgressInput
+  delete: DanceMoveWhereInput
+  disconnect: DanceMoveWhereInput
+  update: DanceMoveUpdateToOneWithWhereWithoutLearningProgressInput
+  upsert: DanceMoveUpsertWithoutLearningProgressInput
+}
+
 input DanceMoveUpdateOneWithoutNotesNestedInput {
   connect: DanceMoveWhereUniqueInput
   connectOrCreate: DanceMoveCreateOrConnectWithoutNotesInput
@@ -962,6 +1020,11 @@ input DanceMoveUpdateOneWithoutNotesNestedInput {
 
 input DanceMoveUpdateToOneWithWhereWithoutDifficultyHistoryInput {
   data: DanceMoveUpdateWithoutDifficultyHistoryInput!
+  where: DanceMoveWhereInput
+}
+
+input DanceMoveUpdateToOneWithWhereWithoutLearningProgressInput {
+  data: DanceMoveUpdateWithoutLearningProgressInput!
   where: DanceMoveWhereInput
 }
 
@@ -986,6 +1049,7 @@ input DanceMoveUpdateWithWhereUniqueWithoutDanceStyleInput {
 }
 
 input DanceMoveUpdateWithoutCreatorInput {
+  LearningProgress: LearningProgressUpdateManyWithoutDanceMoveNestedInput
   aliases: DanceMoveUpdatealiasesInput
   createdAt: DateTimeFieldUpdateOperationsInput
   danceStyle: DanceStyleUpdateOneWithoutDanceMovesNestedInput
@@ -1004,6 +1068,7 @@ input DanceMoveUpdateWithoutCreatorInput {
 }
 
 input DanceMoveUpdateWithoutDanceStyleInput {
+  LearningProgress: LearningProgressUpdateManyWithoutDanceMoveNestedInput
   aliases: DanceMoveUpdatealiasesInput
   createdAt: DateTimeFieldUpdateOperationsInput
   creator: CreatorUpdateOneWithoutDanceMovesNestedInput
@@ -1022,6 +1087,7 @@ input DanceMoveUpdateWithoutDanceStyleInput {
 }
 
 input DanceMoveUpdateWithoutDifficultyHistoryInput {
+  LearningProgress: LearningProgressUpdateManyWithoutDanceMoveNestedInput
   aliases: DanceMoveUpdatealiasesInput
   createdAt: DateTimeFieldUpdateOperationsInput
   creator: CreatorUpdateOneWithoutDanceMovesNestedInput
@@ -1039,7 +1105,27 @@ input DanceMoveUpdateWithoutDifficultyHistoryInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
+input DanceMoveUpdateWithoutLearningProgressInput {
+  aliases: DanceMoveUpdatealiasesInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  creator: CreatorUpdateOneWithoutDanceMovesNestedInput
+  danceStyle: DanceStyleUpdateOneWithoutDanceMovesNestedInput
+  dateCreated: NullableDateTimeFieldUpdateOperationsInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: DanceMoveUpdatedatesReviewedInput
+  difficultyHistory: DifficultyUpdateManyWithoutDanceMoveNestedInput
+  era: NullableEnumEraFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutDanceMoveNestedInput
+  officialSong: NullableStringFieldUpdateOperationsInput
+  origin: NullableStringFieldUpdateOperationsInput
+  transitions: TransitionsAndMovesUpdateManyWithoutDanceMoveNestedInput
+  tutorials: DanceMoveUpdatetutorialsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
 input DanceMoveUpdateWithoutNotesInput {
+  LearningProgress: LearningProgressUpdateManyWithoutDanceMoveNestedInput
   aliases: DanceMoveUpdatealiasesInput
   createdAt: DateTimeFieldUpdateOperationsInput
   creator: CreatorUpdateOneWithoutDanceMovesNestedInput
@@ -1058,6 +1144,7 @@ input DanceMoveUpdateWithoutNotesInput {
 }
 
 input DanceMoveUpdateWithoutTransitionsInput {
+  LearningProgress: LearningProgressUpdateManyWithoutDanceMoveNestedInput
   aliases: DanceMoveUpdatealiasesInput
   createdAt: DateTimeFieldUpdateOperationsInput
   creator: CreatorUpdateOneWithoutDanceMovesNestedInput
@@ -1108,6 +1195,12 @@ input DanceMoveUpsertWithoutDifficultyHistoryInput {
   where: DanceMoveWhereInput
 }
 
+input DanceMoveUpsertWithoutLearningProgressInput {
+  create: DanceMoveCreateWithoutLearningProgressInput!
+  update: DanceMoveUpdateWithoutLearningProgressInput!
+  where: DanceMoveWhereInput
+}
+
 input DanceMoveUpsertWithoutNotesInput {
   create: DanceMoveCreateWithoutNotesInput!
   update: DanceMoveUpdateWithoutNotesInput!
@@ -1122,6 +1215,7 @@ input DanceMoveUpsertWithoutTransitionsInput {
 
 input DanceMoveWhereInput {
   AND: [DanceMoveWhereInput!]
+  LearningProgress: LearningProgressListRelationFilter
   NOT: [DanceMoveWhereInput!]
   OR: [DanceMoveWhereInput!]
   aliases: StringNullableListFilter
@@ -1147,6 +1241,7 @@ input DanceMoveWhereInput {
 
 input DanceMoveWhereUniqueInput {
   AND: [DanceMoveWhereInput!]
+  LearningProgress: LearningProgressListRelationFilter
   NOT: [DanceMoveWhereInput!]
   OR: [DanceMoveWhereInput!]
   aliases: StringNullableListFilter
@@ -2225,6 +2320,27 @@ input EnumEraNullableWithAggregatesFilter {
   notIn: [Era!]
 }
 
+input EnumLearningStageFieldUpdateOperationsInput {
+  set: LearningStage
+}
+
+input EnumLearningStageFilter {
+  equals: LearningStage
+  in: [LearningStage!]
+  not: NestedEnumLearningStageFilter
+  notIn: [LearningStage!]
+}
+
+input EnumLearningStageWithAggregatesFilter {
+  _count: NestedIntFilter
+  _max: NestedEnumLearningStageFilter
+  _min: NestedEnumLearningStageFilter
+  equals: LearningStage
+  in: [LearningStage!]
+  not: NestedEnumLearningStageWithAggregatesFilter
+  notIn: [LearningStage!]
+}
+
 enum Era {
   NEW_SCHOOL
   OLD_SCHOOL
@@ -2292,11 +2408,414 @@ input IntWithAggregatesFilter {
   notIn: [Int!]
 }
 
+type LearningProgress {
+  createdAt: DateTimeISO!
+  danceMove(where: DanceMoveWhereInput): DanceMove
+  danceMoveId: Int
+  date: DateTimeISO!
+  id: Int!
+  stage: LearningStage!
+  transition(where: TransitionWhereInput): Transition
+  transitionId: Int
+  updatedAt: DateTimeISO!
+}
+
+type LearningProgressAvgAggregate {
+  danceMoveId: Float
+  id: Float
+  transitionId: Float
+}
+
+input LearningProgressAvgOrderByAggregateInput {
+  danceMoveId: SortOrder
+  id: SortOrder
+  transitionId: SortOrder
+}
+
+type LearningProgressCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  danceMoveId: Int!
+  date: Int!
+  id: Int!
+  stage: Int!
+  transitionId: Int!
+  updatedAt: Int!
+}
+
+input LearningProgressCountOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  date: SortOrder
+  id: SortOrder
+  stage: SortOrder
+  transitionId: SortOrder
+  updatedAt: SortOrder
+}
+
+input LearningProgressCreateInput {
+  createdAt: DateTimeISO
+  danceMove: DanceMoveCreateNestedOneWithoutLearningProgressInput
+  date: DateTimeISO!
+  stage: LearningStage!
+  transition: TransitionCreateNestedOneWithoutLearningProgressInput
+  updatedAt: DateTimeISO
+}
+
+input LearningProgressCreateManyDanceMoveInput {
+  createdAt: DateTimeISO
+  date: DateTimeISO!
+  id: Int
+  stage: LearningStage!
+  transitionId: Int
+  updatedAt: DateTimeISO
+}
+
+input LearningProgressCreateManyDanceMoveInputEnvelope {
+  data: [LearningProgressCreateManyDanceMoveInput!]!
+  skipDuplicates: Boolean
+}
+
+input LearningProgressCreateManyInput {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  date: DateTimeISO!
+  id: Int
+  stage: LearningStage!
+  transitionId: Int
+  updatedAt: DateTimeISO
+}
+
+input LearningProgressCreateManyTransitionInput {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  date: DateTimeISO!
+  id: Int
+  stage: LearningStage!
+  updatedAt: DateTimeISO
+}
+
+input LearningProgressCreateManyTransitionInputEnvelope {
+  data: [LearningProgressCreateManyTransitionInput!]!
+  skipDuplicates: Boolean
+}
+
+input LearningProgressCreateNestedManyWithoutDanceMoveInput {
+  connect: [LearningProgressWhereUniqueInput!]
+  connectOrCreate: [LearningProgressCreateOrConnectWithoutDanceMoveInput!]
+  create: [LearningProgressCreateWithoutDanceMoveInput!]
+  createMany: LearningProgressCreateManyDanceMoveInputEnvelope
+}
+
+input LearningProgressCreateNestedManyWithoutTransitionInput {
+  connect: [LearningProgressWhereUniqueInput!]
+  connectOrCreate: [LearningProgressCreateOrConnectWithoutTransitionInput!]
+  create: [LearningProgressCreateWithoutTransitionInput!]
+  createMany: LearningProgressCreateManyTransitionInputEnvelope
+}
+
+input LearningProgressCreateOrConnectWithoutDanceMoveInput {
+  create: LearningProgressCreateWithoutDanceMoveInput!
+  where: LearningProgressWhereUniqueInput!
+}
+
+input LearningProgressCreateOrConnectWithoutTransitionInput {
+  create: LearningProgressCreateWithoutTransitionInput!
+  where: LearningProgressWhereUniqueInput!
+}
+
+input LearningProgressCreateWithoutDanceMoveInput {
+  createdAt: DateTimeISO
+  date: DateTimeISO!
+  stage: LearningStage!
+  transition: TransitionCreateNestedOneWithoutLearningProgressInput
+  updatedAt: DateTimeISO
+}
+
+input LearningProgressCreateWithoutTransitionInput {
+  createdAt: DateTimeISO
+  danceMove: DanceMoveCreateNestedOneWithoutLearningProgressInput
+  date: DateTimeISO!
+  stage: LearningStage!
+  updatedAt: DateTimeISO
+}
+
+type LearningProgressGroupBy {
+  _avg: LearningProgressAvgAggregate
+  _count: LearningProgressCountAggregate
+  _max: LearningProgressMaxAggregate
+  _min: LearningProgressMinAggregate
+  _sum: LearningProgressSumAggregate
+  createdAt: DateTimeISO!
+  danceMoveId: Int
+  date: DateTimeISO!
+  id: Int!
+  stage: LearningStage!
+  transitionId: Int
+  updatedAt: DateTimeISO!
+}
+
+input LearningProgressListRelationFilter {
+  every: LearningProgressWhereInput
+  none: LearningProgressWhereInput
+  some: LearningProgressWhereInput
+}
+
+type LearningProgressMaxAggregate {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  date: DateTimeISO
+  id: Int
+  stage: LearningStage
+  transitionId: Int
+  updatedAt: DateTimeISO
+}
+
+input LearningProgressMaxOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  date: SortOrder
+  id: SortOrder
+  stage: SortOrder
+  transitionId: SortOrder
+  updatedAt: SortOrder
+}
+
+type LearningProgressMinAggregate {
+  createdAt: DateTimeISO
+  danceMoveId: Int
+  date: DateTimeISO
+  id: Int
+  stage: LearningStage
+  transitionId: Int
+  updatedAt: DateTimeISO
+}
+
+input LearningProgressMinOrderByAggregateInput {
+  createdAt: SortOrder
+  danceMoveId: SortOrder
+  date: SortOrder
+  id: SortOrder
+  stage: SortOrder
+  transitionId: SortOrder
+  updatedAt: SortOrder
+}
+
+input LearningProgressOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input LearningProgressOrderByWithAggregationInput {
+  _avg: LearningProgressAvgOrderByAggregateInput
+  _count: LearningProgressCountOrderByAggregateInput
+  _max: LearningProgressMaxOrderByAggregateInput
+  _min: LearningProgressMinOrderByAggregateInput
+  _sum: LearningProgressSumOrderByAggregateInput
+  createdAt: SortOrder
+  danceMoveId: SortOrderInput
+  date: SortOrder
+  id: SortOrder
+  stage: SortOrder
+  transitionId: SortOrderInput
+  updatedAt: SortOrder
+}
+
+input LearningProgressOrderByWithRelationInput {
+  createdAt: SortOrder
+  danceMove: DanceMoveOrderByWithRelationInput
+  danceMoveId: SortOrderInput
+  date: SortOrder
+  id: SortOrder
+  stage: SortOrder
+  transition: TransitionOrderByWithRelationInput
+  transitionId: SortOrderInput
+  updatedAt: SortOrder
+}
+
+enum LearningProgressScalarFieldEnum {
+  createdAt
+  danceMoveId
+  date
+  id
+  stage
+  transitionId
+  updatedAt
+}
+
+input LearningProgressScalarWhereInput {
+  AND: [LearningProgressScalarWhereInput!]
+  NOT: [LearningProgressScalarWhereInput!]
+  OR: [LearningProgressScalarWhereInput!]
+  createdAt: DateTimeFilter
+  danceMoveId: IntNullableFilter
+  date: DateTimeFilter
+  id: IntFilter
+  stage: EnumLearningStageFilter
+  transitionId: IntNullableFilter
+  updatedAt: DateTimeFilter
+}
+
+input LearningProgressScalarWhereWithAggregatesInput {
+  AND: [LearningProgressScalarWhereWithAggregatesInput!]
+  NOT: [LearningProgressScalarWhereWithAggregatesInput!]
+  OR: [LearningProgressScalarWhereWithAggregatesInput!]
+  createdAt: DateTimeWithAggregatesFilter
+  danceMoveId: IntNullableWithAggregatesFilter
+  date: DateTimeWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  stage: EnumLearningStageWithAggregatesFilter
+  transitionId: IntNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+type LearningProgressSumAggregate {
+  danceMoveId: Int
+  id: Int
+  transitionId: Int
+}
+
+input LearningProgressSumOrderByAggregateInput {
+  danceMoveId: SortOrder
+  id: SortOrder
+  transitionId: SortOrder
+}
+
+input LearningProgressUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMove: DanceMoveUpdateOneWithoutLearningProgressNestedInput
+  date: DateTimeFieldUpdateOperationsInput
+  stage: EnumLearningStageFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutLearningProgressNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input LearningProgressUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  stage: EnumLearningStageFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input LearningProgressUpdateManyWithWhereWithoutDanceMoveInput {
+  data: LearningProgressUpdateManyMutationInput!
+  where: LearningProgressScalarWhereInput!
+}
+
+input LearningProgressUpdateManyWithWhereWithoutTransitionInput {
+  data: LearningProgressUpdateManyMutationInput!
+  where: LearningProgressScalarWhereInput!
+}
+
+input LearningProgressUpdateManyWithoutDanceMoveNestedInput {
+  connect: [LearningProgressWhereUniqueInput!]
+  connectOrCreate: [LearningProgressCreateOrConnectWithoutDanceMoveInput!]
+  create: [LearningProgressCreateWithoutDanceMoveInput!]
+  createMany: LearningProgressCreateManyDanceMoveInputEnvelope
+  delete: [LearningProgressWhereUniqueInput!]
+  deleteMany: [LearningProgressScalarWhereInput!]
+  disconnect: [LearningProgressWhereUniqueInput!]
+  set: [LearningProgressWhereUniqueInput!]
+  update: [LearningProgressUpdateWithWhereUniqueWithoutDanceMoveInput!]
+  updateMany: [LearningProgressUpdateManyWithWhereWithoutDanceMoveInput!]
+  upsert: [LearningProgressUpsertWithWhereUniqueWithoutDanceMoveInput!]
+}
+
+input LearningProgressUpdateManyWithoutTransitionNestedInput {
+  connect: [LearningProgressWhereUniqueInput!]
+  connectOrCreate: [LearningProgressCreateOrConnectWithoutTransitionInput!]
+  create: [LearningProgressCreateWithoutTransitionInput!]
+  createMany: LearningProgressCreateManyTransitionInputEnvelope
+  delete: [LearningProgressWhereUniqueInput!]
+  deleteMany: [LearningProgressScalarWhereInput!]
+  disconnect: [LearningProgressWhereUniqueInput!]
+  set: [LearningProgressWhereUniqueInput!]
+  update: [LearningProgressUpdateWithWhereUniqueWithoutTransitionInput!]
+  updateMany: [LearningProgressUpdateManyWithWhereWithoutTransitionInput!]
+  upsert: [LearningProgressUpsertWithWhereUniqueWithoutTransitionInput!]
+}
+
+input LearningProgressUpdateWithWhereUniqueWithoutDanceMoveInput {
+  data: LearningProgressUpdateWithoutDanceMoveInput!
+  where: LearningProgressWhereUniqueInput!
+}
+
+input LearningProgressUpdateWithWhereUniqueWithoutTransitionInput {
+  data: LearningProgressUpdateWithoutTransitionInput!
+  where: LearningProgressWhereUniqueInput!
+}
+
+input LearningProgressUpdateWithoutDanceMoveInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  stage: EnumLearningStageFieldUpdateOperationsInput
+  transition: TransitionUpdateOneWithoutLearningProgressNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input LearningProgressUpdateWithoutTransitionInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMove: DanceMoveUpdateOneWithoutLearningProgressNestedInput
+  date: DateTimeFieldUpdateOperationsInput
+  stage: EnumLearningStageFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input LearningProgressUpsertWithWhereUniqueWithoutDanceMoveInput {
+  create: LearningProgressCreateWithoutDanceMoveInput!
+  update: LearningProgressUpdateWithoutDanceMoveInput!
+  where: LearningProgressWhereUniqueInput!
+}
+
+input LearningProgressUpsertWithWhereUniqueWithoutTransitionInput {
+  create: LearningProgressCreateWithoutTransitionInput!
+  update: LearningProgressUpdateWithoutTransitionInput!
+  where: LearningProgressWhereUniqueInput!
+}
+
+input LearningProgressWhereInput {
+  AND: [LearningProgressWhereInput!]
+  NOT: [LearningProgressWhereInput!]
+  OR: [LearningProgressWhereInput!]
+  createdAt: DateTimeFilter
+  danceMove: DanceMoveNullableRelationFilter
+  danceMoveId: IntNullableFilter
+  date: DateTimeFilter
+  id: IntFilter
+  stage: EnumLearningStageFilter
+  transition: TransitionNullableRelationFilter
+  transitionId: IntNullableFilter
+  updatedAt: DateTimeFilter
+}
+
+input LearningProgressWhereUniqueInput {
+  AND: [LearningProgressWhereInput!]
+  NOT: [LearningProgressWhereInput!]
+  OR: [LearningProgressWhereInput!]
+  createdAt: DateTimeFilter
+  danceMove: DanceMoveNullableRelationFilter
+  danceMoveId: IntNullableFilter
+  date: DateTimeFilter
+  id: Int
+  stage: EnumLearningStageFilter
+  transition: TransitionNullableRelationFilter
+  transitionId: IntNullableFilter
+  updatedAt: DateTimeFilter
+}
+
+enum LearningStage {
+  LEARNING
+  MASTERED
+  NOT_STARTED
+  PROFICIENT
+  REVIEWING
+}
+
 type Mutation {
   createManyCreator(data: [CreatorCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyDanceMove(data: [DanceMoveCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyDanceStyle(data: [DanceStyleCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyDifficulty(data: [DifficultyCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyLearningProgress(data: [LearningProgressCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyNote(data: [NoteCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyTransition(data: [TransitionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyTransitionsAndMoves(data: [TransitionsAndMovesCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -2304,6 +2823,7 @@ type Mutation {
   createOneDanceMove(data: DanceMoveCreateInput!): DanceMove!
   createOneDanceStyle(data: DanceStyleCreateInput!): DanceStyle!
   createOneDifficulty(data: DifficultyCreateInput!): Difficulty!
+  createOneLearningProgress(data: LearningProgressCreateInput!): LearningProgress!
   createOneNote(data: NoteCreateInput!): Note!
   createOneTransition(data: TransitionCreateInput!): Transition!
   createOneTransitionsAndMoves(data: TransitionsAndMovesCreateInput!): TransitionsAndMoves!
@@ -2311,6 +2831,7 @@ type Mutation {
   deleteManyDanceMove(where: DanceMoveWhereInput): AffectedRowsOutput!
   deleteManyDanceStyle(where: DanceStyleWhereInput): AffectedRowsOutput!
   deleteManyDifficulty(where: DifficultyWhereInput): AffectedRowsOutput!
+  deleteManyLearningProgress(where: LearningProgressWhereInput): AffectedRowsOutput!
   deleteManyNote(where: NoteWhereInput): AffectedRowsOutput!
   deleteManyTransition(where: TransitionWhereInput): AffectedRowsOutput!
   deleteManyTransitionsAndMoves(where: TransitionsAndMovesWhereInput): AffectedRowsOutput!
@@ -2318,6 +2839,7 @@ type Mutation {
   deleteOneDanceMove(where: DanceMoveWhereUniqueInput!): DanceMove
   deleteOneDanceStyle(where: DanceStyleWhereUniqueInput!): DanceStyle
   deleteOneDifficulty(where: DifficultyWhereUniqueInput!): Difficulty
+  deleteOneLearningProgress(where: LearningProgressWhereUniqueInput!): LearningProgress
   deleteOneNote(where: NoteWhereUniqueInput!): Note
   deleteOneTransition(where: TransitionWhereUniqueInput!): Transition
   deleteOneTransitionsAndMoves(where: TransitionsAndMovesWhereUniqueInput!): TransitionsAndMoves
@@ -2325,6 +2847,7 @@ type Mutation {
   updateManyDanceMove(data: DanceMoveUpdateManyMutationInput!, where: DanceMoveWhereInput): AffectedRowsOutput!
   updateManyDanceStyle(data: DanceStyleUpdateManyMutationInput!, where: DanceStyleWhereInput): AffectedRowsOutput!
   updateManyDifficulty(data: DifficultyUpdateManyMutationInput!, where: DifficultyWhereInput): AffectedRowsOutput!
+  updateManyLearningProgress(data: LearningProgressUpdateManyMutationInput!, where: LearningProgressWhereInput): AffectedRowsOutput!
   updateManyNote(data: NoteUpdateManyMutationInput!, where: NoteWhereInput): AffectedRowsOutput!
   updateManyTransition(data: TransitionUpdateManyMutationInput!, where: TransitionWhereInput): AffectedRowsOutput!
   updateManyTransitionsAndMoves(data: TransitionsAndMovesUpdateManyMutationInput!, where: TransitionsAndMovesWhereInput): AffectedRowsOutput!
@@ -2332,6 +2855,7 @@ type Mutation {
   updateOneDanceMove(data: DanceMoveUpdateInput!, where: DanceMoveWhereUniqueInput!): DanceMove
   updateOneDanceStyle(data: DanceStyleUpdateInput!, where: DanceStyleWhereUniqueInput!): DanceStyle
   updateOneDifficulty(data: DifficultyUpdateInput!, where: DifficultyWhereUniqueInput!): Difficulty
+  updateOneLearningProgress(data: LearningProgressUpdateInput!, where: LearningProgressWhereUniqueInput!): LearningProgress
   updateOneNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note
   updateOneTransition(data: TransitionUpdateInput!, where: TransitionWhereUniqueInput!): Transition
   updateOneTransitionsAndMoves(data: TransitionsAndMovesUpdateInput!, where: TransitionsAndMovesWhereUniqueInput!): TransitionsAndMoves
@@ -2339,6 +2863,7 @@ type Mutation {
   upsertOneDanceMove(create: DanceMoveCreateInput!, update: DanceMoveUpdateInput!, where: DanceMoveWhereUniqueInput!): DanceMove!
   upsertOneDanceStyle(create: DanceStyleCreateInput!, update: DanceStyleUpdateInput!, where: DanceStyleWhereUniqueInput!): DanceStyle!
   upsertOneDifficulty(create: DifficultyCreateInput!, update: DifficultyUpdateInput!, where: DifficultyWhereUniqueInput!): Difficulty!
+  upsertOneLearningProgress(create: LearningProgressCreateInput!, update: LearningProgressUpdateInput!, where: LearningProgressWhereUniqueInput!): LearningProgress!
   upsertOneNote(create: NoteCreateInput!, update: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note!
   upsertOneTransition(create: TransitionCreateInput!, update: TransitionUpdateInput!, where: TransitionWhereUniqueInput!): Transition!
   upsertOneTransitionsAndMoves(create: TransitionsAndMovesCreateInput!, update: TransitionsAndMovesUpdateInput!, where: TransitionsAndMovesWhereUniqueInput!): TransitionsAndMoves!
@@ -2409,6 +2934,23 @@ input NestedEnumEraNullableWithAggregatesFilter {
   in: [Era!]
   not: NestedEnumEraNullableWithAggregatesFilter
   notIn: [Era!]
+}
+
+input NestedEnumLearningStageFilter {
+  equals: LearningStage
+  in: [LearningStage!]
+  not: NestedEnumLearningStageFilter
+  notIn: [LearningStage!]
+}
+
+input NestedEnumLearningStageWithAggregatesFilter {
+  _count: NestedIntFilter
+  _max: NestedEnumLearningStageFilter
+  _min: NestedEnumLearningStageFilter
+  equals: LearningStage
+  in: [LearningStage!]
+  not: NestedEnumLearningStageWithAggregatesFilter
+  notIn: [LearningStage!]
 }
 
 input NestedFloatFilter {
@@ -3154,6 +3696,7 @@ type Query {
   aggregateDanceMove(cursor: DanceMoveWhereUniqueInput, orderBy: [DanceMoveOrderByWithRelationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): AggregateDanceMove!
   aggregateDanceStyle(cursor: DanceStyleWhereUniqueInput, orderBy: [DanceStyleOrderByWithRelationInput!], skip: Int, take: Int, where: DanceStyleWhereInput): AggregateDanceStyle!
   aggregateDifficulty(cursor: DifficultyWhereUniqueInput, orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): AggregateDifficulty!
+  aggregateLearningProgress(cursor: LearningProgressWhereUniqueInput, orderBy: [LearningProgressOrderByWithRelationInput!], skip: Int, take: Int, where: LearningProgressWhereInput): AggregateLearningProgress!
   aggregateNote(cursor: NoteWhereUniqueInput, orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): AggregateNote!
   aggregateTransition(cursor: TransitionWhereUniqueInput, orderBy: [TransitionOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionWhereInput): AggregateTransition!
   aggregateTransitionsAndMoves(cursor: TransitionsAndMovesWhereUniqueInput, orderBy: [TransitionsAndMovesOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): AggregateTransitionsAndMoves!
@@ -3173,6 +3716,8 @@ type Query {
   findFirstDanceStyleOrThrow(cursor: DanceStyleWhereUniqueInput, distinct: [DanceStyleScalarFieldEnum!], orderBy: [DanceStyleOrderByWithRelationInput!], skip: Int, take: Int, where: DanceStyleWhereInput): DanceStyle
   findFirstDifficulty(cursor: DifficultyWhereUniqueInput, distinct: [DifficultyScalarFieldEnum!], orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): Difficulty
   findFirstDifficultyOrThrow(cursor: DifficultyWhereUniqueInput, distinct: [DifficultyScalarFieldEnum!], orderBy: [DifficultyOrderByWithRelationInput!], skip: Int, take: Int, where: DifficultyWhereInput): Difficulty
+  findFirstLearningProgress(cursor: LearningProgressWhereUniqueInput, distinct: [LearningProgressScalarFieldEnum!], orderBy: [LearningProgressOrderByWithRelationInput!], skip: Int, take: Int, where: LearningProgressWhereInput): LearningProgress
+  findFirstLearningProgressOrThrow(cursor: LearningProgressWhereUniqueInput, distinct: [LearningProgressScalarFieldEnum!], orderBy: [LearningProgressOrderByWithRelationInput!], skip: Int, take: Int, where: LearningProgressWhereInput): LearningProgress
   findFirstNote(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): Note
   findFirstNoteOrThrow(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): Note
   findFirstTransition(cursor: TransitionWhereUniqueInput, distinct: [TransitionScalarFieldEnum!], orderBy: [TransitionOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionWhereInput): Transition
@@ -3186,15 +3731,19 @@ type Query {
   getDanceMove(where: DanceMoveWhereUniqueInput!): DanceMove
   getDanceStyle(where: DanceStyleWhereUniqueInput!): DanceStyle
   getDifficulty(where: DifficultyWhereUniqueInput!): Difficulty
+  getLearningProgress(where: LearningProgressWhereUniqueInput!): LearningProgress
   getNote(where: NoteWhereUniqueInput!): Note
   getTransition(where: TransitionWhereUniqueInput!): Transition
   groupByCreator(by: [CreatorScalarFieldEnum!]!, having: CreatorScalarWhereWithAggregatesInput, orderBy: [CreatorOrderByWithAggregationInput!], skip: Int, take: Int, where: CreatorWhereInput): [CreatorGroupBy!]!
   groupByDanceMove(by: [DanceMoveScalarFieldEnum!]!, having: DanceMoveScalarWhereWithAggregatesInput, orderBy: [DanceMoveOrderByWithAggregationInput!], skip: Int, take: Int, where: DanceMoveWhereInput): [DanceMoveGroupBy!]!
   groupByDanceStyle(by: [DanceStyleScalarFieldEnum!]!, having: DanceStyleScalarWhereWithAggregatesInput, orderBy: [DanceStyleOrderByWithAggregationInput!], skip: Int, take: Int, where: DanceStyleWhereInput): [DanceStyleGroupBy!]!
   groupByDifficulty(by: [DifficultyScalarFieldEnum!]!, having: DifficultyScalarWhereWithAggregatesInput, orderBy: [DifficultyOrderByWithAggregationInput!], skip: Int, take: Int, where: DifficultyWhereInput): [DifficultyGroupBy!]!
+  groupByLearningProgress(by: [LearningProgressScalarFieldEnum!]!, having: LearningProgressScalarWhereWithAggregatesInput, orderBy: [LearningProgressOrderByWithAggregationInput!], skip: Int, take: Int, where: LearningProgressWhereInput): [LearningProgressGroupBy!]!
   groupByNote(by: [NoteScalarFieldEnum!]!, having: NoteScalarWhereWithAggregatesInput, orderBy: [NoteOrderByWithAggregationInput!], skip: Int, take: Int, where: NoteWhereInput): [NoteGroupBy!]!
   groupByTransition(by: [TransitionScalarFieldEnum!]!, having: TransitionScalarWhereWithAggregatesInput, orderBy: [TransitionOrderByWithAggregationInput!], skip: Int, take: Int, where: TransitionWhereInput): [TransitionGroupBy!]!
   groupByTransitionsAndMoves(by: [TransitionsAndMovesScalarFieldEnum!]!, having: TransitionsAndMovesScalarWhereWithAggregatesInput, orderBy: [TransitionsAndMovesOrderByWithAggregationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): [TransitionsAndMovesGroupBy!]!
+  learningProgress(where: LearningProgressWhereUniqueInput!): LearningProgress
+  learningProgresses(cursor: LearningProgressWhereUniqueInput, distinct: [LearningProgressScalarFieldEnum!], orderBy: [LearningProgressOrderByWithRelationInput!], skip: Int, take: Int, where: LearningProgressWhereInput): [LearningProgress!]!
   note(where: NoteWhereUniqueInput!): Note
   notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
   transition(where: TransitionWhereUniqueInput!): Transition
@@ -3295,6 +3844,7 @@ input StringWithAggregatesFilter {
 }
 
 type Transition {
+  LearningProgress(cursor: LearningProgressWhereUniqueInput, distinct: [LearningProgressScalarFieldEnum!], orderBy: [LearningProgressOrderByWithRelationInput!], skip: Int, take: Int, where: LearningProgressWhereInput): [LearningProgress!]!
   _count: TransitionCount
   createdAt: DateTimeISO!
   danceMoves(cursor: TransitionsAndMovesWhereUniqueInput, distinct: [TransitionsAndMovesScalarFieldEnum!], orderBy: [TransitionsAndMovesOrderByWithRelationInput!], skip: Int, take: Int, where: TransitionsAndMovesWhereInput): [TransitionsAndMoves!]!
@@ -3317,6 +3867,7 @@ input TransitionAvgOrderByAggregateInput {
 }
 
 type TransitionCount {
+  LearningProgress(where: LearningProgressWhereInput): Int!
   danceMoves(where: TransitionsAndMovesWhereInput): Int!
   difficultyHistory(where: DifficultyWhereInput): Int!
   notes(where: NoteWhereInput): Int!
@@ -3344,6 +3895,7 @@ input TransitionCountOrderByAggregateInput {
 }
 
 input TransitionCreateInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutTransitionInput
   createdAt: DateTimeISO
   danceMoves: TransitionsAndMovesCreateNestedManyWithoutTransitionInput
   dateLearned: DateTimeISO
@@ -3377,6 +3929,12 @@ input TransitionCreateNestedOneWithoutDifficultyHistoryInput {
   create: TransitionCreateWithoutDifficultyHistoryInput
 }
 
+input TransitionCreateNestedOneWithoutLearningProgressInput {
+  connect: TransitionWhereUniqueInput
+  connectOrCreate: TransitionCreateOrConnectWithoutLearningProgressInput
+  create: TransitionCreateWithoutLearningProgressInput
+}
+
 input TransitionCreateNestedOneWithoutNotesInput {
   connect: TransitionWhereUniqueInput
   connectOrCreate: TransitionCreateOrConnectWithoutNotesInput
@@ -3393,12 +3951,18 @@ input TransitionCreateOrConnectWithoutDifficultyHistoryInput {
   where: TransitionWhereUniqueInput!
 }
 
+input TransitionCreateOrConnectWithoutLearningProgressInput {
+  create: TransitionCreateWithoutLearningProgressInput!
+  where: TransitionWhereUniqueInput!
+}
+
 input TransitionCreateOrConnectWithoutNotesInput {
   create: TransitionCreateWithoutNotesInput!
   where: TransitionWhereUniqueInput!
 }
 
 input TransitionCreateWithoutDanceMovesInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutTransitionInput
   createdAt: DateTimeISO
   dateLearned: DateTimeISO
   datesReviewed: TransitionCreatedatesReviewedInput
@@ -3410,6 +3974,7 @@ input TransitionCreateWithoutDanceMovesInput {
 }
 
 input TransitionCreateWithoutDifficultyHistoryInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutTransitionInput
   createdAt: DateTimeISO
   danceMoves: TransitionsAndMovesCreateNestedManyWithoutTransitionInput
   dateLearned: DateTimeISO
@@ -3420,7 +3985,20 @@ input TransitionCreateWithoutDifficultyHistoryInput {
   updatedAt: DateTimeISO
 }
 
+input TransitionCreateWithoutLearningProgressInput {
+  createdAt: DateTimeISO
+  danceMoves: TransitionsAndMovesCreateNestedManyWithoutTransitionInput
+  dateLearned: DateTimeISO
+  datesReviewed: TransitionCreatedatesReviewedInput
+  description: String
+  difficultyHistory: DifficultyCreateNestedManyWithoutTransitionInput
+  name: String
+  notes: NoteCreateNestedManyWithoutTransitionInput
+  updatedAt: DateTimeISO
+}
+
 input TransitionCreateWithoutNotesInput {
+  LearningProgress: LearningProgressCreateNestedManyWithoutTransitionInput
   createdAt: DateTimeISO
   danceMoves: TransitionsAndMovesCreateNestedManyWithoutTransitionInput
   dateLearned: DateTimeISO
@@ -3507,6 +4085,7 @@ input TransitionOrderByWithAggregationInput {
 }
 
 input TransitionOrderByWithRelationInput {
+  LearningProgress: LearningProgressOrderByRelationAggregateInput
   createdAt: SortOrder
   danceMoves: TransitionsAndMovesOrderByRelationAggregateInput
   dateLearned: SortOrderInput
@@ -3556,6 +4135,7 @@ input TransitionSumOrderByAggregateInput {
 }
 
 input TransitionUpdateInput {
+  LearningProgress: LearningProgressUpdateManyWithoutTransitionNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   danceMoves: TransitionsAndMovesUpdateManyWithoutTransitionNestedInput
   dateLearned: NullableDateTimeFieldUpdateOperationsInput
@@ -3594,6 +4174,16 @@ input TransitionUpdateOneWithoutDifficultyHistoryNestedInput {
   upsert: TransitionUpsertWithoutDifficultyHistoryInput
 }
 
+input TransitionUpdateOneWithoutLearningProgressNestedInput {
+  connect: TransitionWhereUniqueInput
+  connectOrCreate: TransitionCreateOrConnectWithoutLearningProgressInput
+  create: TransitionCreateWithoutLearningProgressInput
+  delete: TransitionWhereInput
+  disconnect: TransitionWhereInput
+  update: TransitionUpdateToOneWithWhereWithoutLearningProgressInput
+  upsert: TransitionUpsertWithoutLearningProgressInput
+}
+
 input TransitionUpdateOneWithoutNotesNestedInput {
   connect: TransitionWhereUniqueInput
   connectOrCreate: TransitionCreateOrConnectWithoutNotesInput
@@ -3614,12 +4204,18 @@ input TransitionUpdateToOneWithWhereWithoutDifficultyHistoryInput {
   where: TransitionWhereInput
 }
 
+input TransitionUpdateToOneWithWhereWithoutLearningProgressInput {
+  data: TransitionUpdateWithoutLearningProgressInput!
+  where: TransitionWhereInput
+}
+
 input TransitionUpdateToOneWithWhereWithoutNotesInput {
   data: TransitionUpdateWithoutNotesInput!
   where: TransitionWhereInput
 }
 
 input TransitionUpdateWithoutDanceMovesInput {
+  LearningProgress: LearningProgressUpdateManyWithoutTransitionNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   dateLearned: NullableDateTimeFieldUpdateOperationsInput
   datesReviewed: TransitionUpdatedatesReviewedInput
@@ -3631,6 +4227,7 @@ input TransitionUpdateWithoutDanceMovesInput {
 }
 
 input TransitionUpdateWithoutDifficultyHistoryInput {
+  LearningProgress: LearningProgressUpdateManyWithoutTransitionNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   danceMoves: TransitionsAndMovesUpdateManyWithoutTransitionNestedInput
   dateLearned: NullableDateTimeFieldUpdateOperationsInput
@@ -3641,7 +4238,20 @@ input TransitionUpdateWithoutDifficultyHistoryInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
+input TransitionUpdateWithoutLearningProgressInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  danceMoves: TransitionsAndMovesUpdateManyWithoutTransitionNestedInput
+  dateLearned: NullableDateTimeFieldUpdateOperationsInput
+  datesReviewed: TransitionUpdatedatesReviewedInput
+  description: NullableStringFieldUpdateOperationsInput
+  difficultyHistory: DifficultyUpdateManyWithoutTransitionNestedInput
+  name: NullableStringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutTransitionNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
 input TransitionUpdateWithoutNotesInput {
+  LearningProgress: LearningProgressUpdateManyWithoutTransitionNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   danceMoves: TransitionsAndMovesUpdateManyWithoutTransitionNestedInput
   dateLearned: NullableDateTimeFieldUpdateOperationsInput
@@ -3669,6 +4279,12 @@ input TransitionUpsertWithoutDifficultyHistoryInput {
   where: TransitionWhereInput
 }
 
+input TransitionUpsertWithoutLearningProgressInput {
+  create: TransitionCreateWithoutLearningProgressInput!
+  update: TransitionUpdateWithoutLearningProgressInput!
+  where: TransitionWhereInput
+}
+
 input TransitionUpsertWithoutNotesInput {
   create: TransitionCreateWithoutNotesInput!
   update: TransitionUpdateWithoutNotesInput!
@@ -3677,6 +4293,7 @@ input TransitionUpsertWithoutNotesInput {
 
 input TransitionWhereInput {
   AND: [TransitionWhereInput!]
+  LearningProgress: LearningProgressListRelationFilter
   NOT: [TransitionWhereInput!]
   OR: [TransitionWhereInput!]
   createdAt: DateTimeFilter
@@ -3693,6 +4310,7 @@ input TransitionWhereInput {
 
 input TransitionWhereUniqueInput {
   AND: [TransitionWhereInput!]
+  LearningProgress: LearningProgressListRelationFilter
   NOT: [TransitionWhereInput!]
   OR: [TransitionWhereInput!]
   createdAt: DateTimeFilter
