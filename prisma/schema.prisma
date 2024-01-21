@@ -51,10 +51,11 @@ model DanceMove {
   notes Note[]
 
   // Relation to Transition
-  transitions TransitionsAndMoves[]
 
   // Relation to LearningProgress
-  LearningProgress LearningProgress[]
+  learningProgress LearningProgress[]
+  transitionMove1  Transition[]       @relation("DanceMove1ToTransition")
+  transitionMove2  Transition[]       @relation("DanceMove2ToTransition")
 }
 
 model Creator {
@@ -142,14 +143,18 @@ model Transition {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relation to DanceMove
-  danceMoves TransitionsAndMoves[]
-
   // Information about the transition
   name          String? // will be combination of dance move names
   description   String?
   dateLearned   DateTime?
   datesReviewed DateTime[]
+
+  // Relations to DanceMove
+  danceMove1   DanceMove? @relation("DanceMove1ToTransition", fields: [danceMove1Id], references: [id])
+  danceMove1Id Int?
+
+  danceMove2   DanceMove? @relation("DanceMove2ToTransition", fields: [danceMove2Id], references: [id])
+  danceMove2Id Int?
 
   // Relation to Difficulty history
   difficultyHistory Difficulty[]
@@ -159,19 +164,6 @@ model Transition {
 
   // Relation to LearningProgress
   LearningProgress LearningProgress[]
-}
-
-model TransitionsAndMoves {
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  danceMove   DanceMove @relation(fields: [danceMoveId], references: [id])
-  danceMoveId Int
-
-  transition   Transition @relation(fields: [transitionId], references: [id])
-  transitionId Int
-
-  @@id([danceMoveId, transitionId])
 }
 
 model LearningProgress {
