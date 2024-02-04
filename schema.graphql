@@ -2905,6 +2905,7 @@ type Mutation {
   createOneLearningProgress(data: LearningProgressCreateInput!): LearningProgress!
   createOneNote(data: NoteCreateInput!): Note!
   createOneTransition(data: TransitionCreateInput!): Transition!
+  createTransition(danceMove1Id: Float!, danceMove2Id: Float!, description: String, name: String): Transition!
   deleteManyCreator(where: CreatorWhereInput): AffectedRowsOutput!
   deleteManyDanceMove(where: DanceMoveWhereInput): AffectedRowsOutput!
   deleteManyDanceStyle(where: DanceStyleWhereInput): AffectedRowsOutput!
@@ -4154,6 +4155,11 @@ input TransitionCreatedatesReviewedInput {
   set: [DateTimeISO!]!
 }
 
+input TransitionDanceMove1IdDanceMove2IdCompoundUniqueInput {
+  danceMove1Id: Int!
+  danceMove2Id: Int!
+}
+
 type TransitionGroupBy {
   _avg: TransitionAvgAggregate
   _count: TransitionCountAggregate
@@ -4562,6 +4568,7 @@ input TransitionWhereUniqueInput {
   createdAt: DateTimeFilter
   danceMove1: DanceMoveNullableRelationFilter
   danceMove1Id: IntNullableFilter
+  danceMove1Id_danceMove2Id: TransitionDanceMove1IdDanceMove2IdCompoundUniqueInput
   danceMove2: DanceMoveNullableRelationFilter
   danceMove2Id: IntNullableFilter
   dateLearned: DateTimeNullableFilter

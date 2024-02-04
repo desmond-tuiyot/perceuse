@@ -156,6 +156,7 @@ model Transition {
   danceMove2   DanceMove? @relation("DanceMove2ToTransition", fields: [danceMove2Id], references: [id])
   danceMove2Id Int?
 
+  @@unique([danceMove1Id, danceMove2Id])
   // Relation to Difficulty history
   difficultyHistory Difficulty[]
 
