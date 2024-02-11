@@ -1,4 +1,4 @@
-import "reflect-metadata"
+import 'reflect-metadata'
 import http from 'http'
 import cors from 'cors'
 import express from 'express'
@@ -10,6 +10,7 @@ import { resolvers } from './generated/type-graphql'
 import { PrismaClient } from '@prisma/client'
 import morgan from 'morgan'
 
+import { TransitionResolver } from './modules/transition/transition-resolver'
 import { SERVER_PORT, SERVER_GQL_PATH } from './constants'
 
 const init = async () => {
@@ -32,7 +33,7 @@ const init = async () => {
   // Apollo server
   const createSchema = async () => {
     return await buildSchema({
-      resolvers,
+      resolvers: [...resolvers, TransitionResolver],
       emitSchemaFile: true,
       validate: false,
     })

@@ -15,9 +15,180 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Era {
+  OLD_SCHOOL
+  NEW_SCHOOL
+}
+
 model DanceMove {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the dance move
+  name         String
+  aliases      String[]
+  tutorials    String[] // currently just links. Might be better to create a Tutorial model
+  origin       String? // update to country enum
+  dateCreated  DateTime?
+  era          Era?
+  officialSong String?
+
+  // Info about learning the dance move
+  dateLearned       DateTime?
+  datesReviewed     DateTime[]
+  difficultyHistory Difficulty[]
+
+  // Relation to Creator
+  creator   Creator? @relation(fields: [creatorId], references: [id])
+  creatorId Int?
+
+  // Relation to DanceStyle
+  danceStyle   DanceStyle? @relation(fields: [danceStyleId], references: [id])
+  danceStyleId Int?
+
+  // Relation to Notes
+  notes Note[]
+
+  // Relation to Transition
+
+  // Relation to LearningProgress
+  learningProgress LearningProgress[]
+  transitionMove1  Transition[]       @relation("DanceMove1ToTransition")
+  transitionMove2  Transition[]       @relation("DanceMove2ToTransition")
+}
+
+model Creator {
   id        Int      @id @default(autoincrement())
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Relation to DanceMove
+  danceMoves DanceMove[]
+
+  // Relation to DanceStyle
+  danceStyles DanceStyle[]
+}
+
+model Difficulty {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the difficulty
+  date   DateTime
+  rating Int
+
+  // Relation to DanceMove
+  danceMove   DanceMove? @relation(fields: [danceMoveId], references: [id])
+  danceMoveId Int?
+
+  // Relation to Notes
+  notes Note[]
+
+  // Relation to Transition
+  transition   Transition? @relation(fields: [transitionId], references: [id])
+  transitionId Int?
+}
+
+model DanceStyle {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the dance style
+  name        String
+  description String?
+  aliases     String[]
+  origin      String? // update to country enum
+  dateCreated DateTime?
+  creator     Creator?  @relation(fields: [creatorId], references: [id])
+  creatorId   Int?
+
+  // Relation to DanceMove
+  danceMoves DanceMove[]
+
+  // Relation to Notes
+  notes Note[]
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the note
+  text String
+
+  // Relation to DanceMove
+  danceMove   DanceMove? @relation(fields: [danceMoveId], references: [id])
+  danceMoveId Int?
+
+  // Relation to Difficulty
+  difficulty   Difficulty? @relation(fields: [difficultyId], references: [id])
+  difficultyId Int?
+
+  // Relation to DanceStyle
+  danceStyle   DanceStyle? @relation(fields: [danceStyleId], references: [id])
+  danceStyleId Int?
+
+  // Relation to Transition
+  transition   Transition? @relation(fields: [transitionId], references: [id])
+  transitionId Int?
+}
+
+model Transition {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the transition
+  name          String? // will be combination of dance move names
+  description   String?
+  dateLearned   DateTime?
+  datesReviewed DateTime[]
+
+  // Relations to DanceMove
+  danceMove1   DanceMove? @relation("DanceMove1ToTransition", fields: [danceMove1Id], references: [id])
+  danceMove1Id Int?
+
+  danceMove2   DanceMove? @relation("DanceMove2ToTransition", fields: [danceMove2Id], references: [id])
+  danceMove2Id Int?
+
+  @@unique([danceMove1Id, danceMove2Id])
+  // Relation to Difficulty history
+  difficultyHistory Difficulty[]
+
+  // Relation to Notes
+  notes Note[]
+
+  // Relation to LearningProgress
+  LearningProgress LearningProgress[]
+}
+
+model LearningProgress {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Information about the learning progress
+  date  DateTime
+  stage LearningStage
+
+  // Relation to DanceMove
+  danceMove   DanceMove? @relation(fields: [danceMoveId], references: [id])
+  danceMoveId Int?
+
+  // Relation to Transition
+  transition   Transition? @relation(fields: [transitionId], references: [id])
+  transitionId Int?
+}
+
+enum LearningStage {
+  NOT_STARTED
+  LEARNING // initial learning & exploration
+  REVIEWING // reviewing & practicing
+  PROFICIENT
+  MASTERED
 }
